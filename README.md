@@ -3,6 +3,7 @@ Developing a program useful to students that need to revise their preparation.
 
 The user can:
 - Revise: the user can select the subject and/or the topics, the program will show some question (in the form of cards) in casual order and user will be able to answer, after that the card will flip and the user will be able to valutate themselves. The program will collect statistics about wrong user answers in order to enable user the choiche to retry them.
+
 - Import new decks: it will be possible to import new decks trough .json files, by url or by simply pasting the file content.
 - Create, edit and delete decks and single cards in each deck
 
@@ -20,6 +21,7 @@ Sviluppare un programma di supporto agli studenti che necessitano di ripassare.
 
 L'utente potrà:
 - Ripassare: l'utente potrà selezionare la materia e/o gli argomenti, il programma mostrerà delle domande (sotto forma di carta) in ordine casuale e l'utente potrà rispondere, dopodichè la carta si girerà e l'utente e avrà modo di auto-valutarsi. Il programma raccoglierà statistiche sulle domande a cui l'utente ha risposto in modo errato, offrendo la possibilità di riproporle su richiesta.
+
 - Importare nuovi mazzi: sarà possibile importare nuovi mazzi attraverso file json, tramite url o incollando direttamente il contenuto del file.
 - Creare, modificare e rimuovere i mazzi di carte e le singole carte di ogni mazzo.
 

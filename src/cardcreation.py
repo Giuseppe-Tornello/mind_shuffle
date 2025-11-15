@@ -22,6 +22,7 @@ def write_card_to_deck(card:dict, deck_name:str) -> None:
 
     if not os.path.exists(path):
         deck = []
+        next_id = 0
 
     else:
         with open(path, "r", encoding="utf-8") as f:

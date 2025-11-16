@@ -40,4 +40,4 @@ def write_card_to_deck(card:dict, deck_name:str) -> None:
     deck.append(card)
     
     with open(path, "w", encoding="utf-8") as f:
-        json.dump(deck, f, ensure_ascii=False, indent=4)
+        json.dump(deck, f, ensure_ascii=False, indent=2)

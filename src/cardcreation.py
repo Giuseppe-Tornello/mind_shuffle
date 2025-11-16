@@ -29,7 +29,7 @@ def write_card_to_deck(card:dict, deck_name:str) -> None:
             try:
                 deck = json.load(f)
                 head = deck[len(deck)-1]
-                next_id = head.get('id') + 1
+                next_id = head.get("id") + 1
             
             except json.JSONDecodeError: 
                 # if the deck is not correctly formatted it's overwritten
@@ -41,3 +41,4 @@ def write_card_to_deck(card:dict, deck_name:str) -> None:
     
     with open(path, "w", encoding="utf-8") as f:
         json.dump(deck, f, ensure_ascii=False, indent=2)
+

@@ -42,3 +42,21 @@ def write_card_to_deck(card:dict, deck_name:str) -> None:
     with open(path, "w", encoding="utf-8") as f:
         json.dump(deck, f, ensure_ascii=False, indent=2)
 
+
+def import_deck(deck:list[dict], deck_name:str) -> None:
+    """
+    imports a whole deck locally. its intended use its related to
+    remotely downloaded json files. it does not overwrite already existing decks 
+    with the same name.
+    """
+    
+    path = "./data/decks/" + deck_name + ".json"
+    i = 0
+
+    while os.path.exists(path):
+        # needed to avoid overwriting other already locally existing decks
+        i += 1
+        path = "./data/decks/" + deck_name + str(i) + ".json"
+
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(deck, f, ensure_ascii=False, indent=2)

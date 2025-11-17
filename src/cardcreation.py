@@ -48,7 +48,7 @@ def write_card_to_deck(card:dict, deck_name:str) -> None:
         json.dump(deck, f, ensure_ascii=False, indent=2)
 
 
-def delete_card_from_deck(card_id:int, deck_name:str):
+def delete_card(card_id: int, deck_name: str) -> None:
     """deletes the specified card from a deck"""
 
     path = _deck_name_to_path(deck_name)

@@ -1,15 +1,12 @@
 import sys
-from PySide6.QtWidgets import (
-    QApplication, QWidget, QTextEdit, QVBoxLayout,
-    QSizePolicy, QPushButton
-)
+from PySide6.QtWidgets import QApplication, QWidget, QTextEdit, QVBoxLayout, QSizePolicy, QPushButton
 
 
 class QuestionWindow(QWidget):
-    def __init__(self, windowTitle: str, readonlyText: str):
+    def __init__(self, window_title: str, question: str):
         super().__init__()
 
-        self.setWindowTitle(windowTitle)
+        self.setWindowTitle(window_title)
         self.resize(600, 400)
 
         layout = QVBoxLayout()
@@ -17,7 +14,7 @@ class QuestionWindow(QWidget):
         # --- Read only box ---
         self.readonly_box = QTextEdit()
         self.readonly_box.setReadOnly(True)
-        self.readonly_box.setText(readonlyText)
+        self.readonly_box.setText(question)
         self.readonly_box.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         # --- Editable box ---

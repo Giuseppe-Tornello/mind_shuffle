@@ -41,5 +41,6 @@ jobs:
       - name: Lint with mypy
         run: mypy $(git ls-files '*.py')
 
-      - name: Test with pytest
-        run: pytest --cov src tests/
+# TEMPORARELY DISABLED SINCE THERE ARE NO TESTS YET
+#      - name: Test with pytest
+#        run: pytest --cov src tests/

@@ -1,5 +1,5 @@
-import json
-import os
+from json import load, dump, JSONDecodeError
+from os import path
 from .data.constants import JSON_ENCODING, DECKS_PATH, DECKS_EXTENSION
 
 
@@ -26,18 +26,18 @@ def write_card(card: dict, deck_name: str) -> None:
 
     path = _deck_name_to_path(deck_name)
 
-    if not os.path.exists(path):
+    if not path.exists(path):
         deck = []
         next_id = 0
 
     else:
         with open(path, "r", encoding=JSON_ENCODING) as f:
             try:
-                deck = json.load(f)
+                deck = load(f)
                 head = deck[len(deck) - 1]
                 next_id = head.get("id") + 1
 
-            except json.JSONDecodeError:
+            except JSONDecodeError:
                 # if the deck is not correctly formatted it's overwritten
                 deck = []
                 next_id = 0
@@ -46,7 +46,7 @@ def write_card(card: dict, deck_name: str) -> None:
     deck.append(card)
 
     with open(path, "w", encoding=JSON_ENCODING) as f:
-        json.dump(deck, f, ensure_ascii=False, indent=2)
+        dump(deck, f, ensure_ascii=False, indent=2)
 
 
 def delete_card(card_id: int, deck_name: str) -> None:
@@ -54,13 +54,13 @@ def delete_card(card_id: int, deck_name: str) -> None:
 
     path = _deck_name_to_path(deck_name)
 
-    if not os.path.exists(path):
+    if not path.exists(path):
         return
 
     with open(path, "r", encoding=JSON_ENCODING) as f:
         try:
-            deck = json.load(f)
-        except json.JSONDecodeError:
+            deck = load(f)
+        except JSONDecodeError:
             return
 
     for i, card in enumerate(deck, start=0):
@@ -69,7 +69,7 @@ def delete_card(card_id: int, deck_name: str) -> None:
             break
 
     with open(path, "w", encoding=JSON_ENCODING) as f:
-        json.dump(deck, f, ensure_ascii=False, indent=2)
+        dump(deck, f, ensure_ascii=False, indent=2)
 
 
 def import_deck(deck: list[dict], deck_name: str) -> None:
@@ -82,10 +82,10 @@ def import_deck(deck: list[dict], deck_name: str) -> None:
     path = _deck_name_to_path(deck_name)
     i = 0
 
-    while os.path.exists(path):
+    while path.exists(path):
         # needed to avoid overwriting other already locally existing decks
         i += 1
         path = _deck_name_to_path(deck_name + str(i))
 
     with open(path, "w", encoding=JSON_ENCODING) as f:
-        json.dump(deck, f, ensure_ascii=False, indent=2)
+        dump(deck, f, ensure_ascii=False, indent=2)

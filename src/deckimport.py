@@ -1,4 +1,4 @@
-import requests
+from requests import get, exceptions
 from .data.constants import DECKS_EXTENSION
 
 
@@ -16,7 +16,7 @@ def get_deck_from_link(url: str) -> list:
     if not url.endswith(DECKS_EXTENSION):
         return []
 
-    response = requests.get(url, timeout=20)
+    response = get(url, timeout=20)
     if response.status_code != 200:
         return []
 
@@ -24,5 +24,5 @@ def get_deck_from_link(url: str) -> list:
         deck = response.json()
         return deck
 
-    except requests.exceptions.JSONDecodeError:
+    except exceptions.JSONDecodeError:
         return []

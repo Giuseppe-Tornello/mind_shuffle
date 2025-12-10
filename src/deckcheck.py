@@ -1,7 +1,8 @@
-from .data.constants import CARD_ATTRIBUTES, OPTIONAL_ATTRIBUTES
+import json
+from .data.constants import CARD_ATTRIBUTES, OPTIONAL_ATTRIBUTES, JSON_ENCODING, DECKS_EXTENSION
 
 
-def check_deck(deck: list[dict]) -> bool:
+def is_valid_deck(deck: list[dict]) -> bool:
     """checks if the deck is valid"""
     if deck is None:
         return False
@@ -15,9 +16,25 @@ def check_deck(deck: list[dict]) -> bool:
         has_empty_values = not all(card[attr] for attr in mandatory_attributes)
 
         # current card id MUST be < than previous card
-        if wrong_attributes or has_empty_values and card["id"] <= previous_id:
+        if wrong_attributes or has_empty_values or card["id"] <= previous_id:
             return False
 
         previous_id = card["id"]
 
     return True
+
+
+def is_valid_deck_file(path: str) -> bool:
+    """opens file path and checks if deck is valid"""
+    if not path.endswith(DECKS_EXTENSION):
+        return False
+
+    with open(path, "r", encoding=JSON_ENCODING) as f:
+        try:
+            deck = json.load(f)
+            if not isinstance(deck, list):
+                return False
+            return is_valid_deck(deck)
+
+        except json.JSONDecodeError:
+            return False

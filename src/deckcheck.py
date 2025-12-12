@@ -26,7 +26,7 @@ def is_valid_deck(deck: list[dict]) -> bool:
 
 def is_valid_deck_file(path: str) -> bool:
     """opens file path and checks if deck is valid"""
-    if not path.endswith(DECKS_EXTENSION):
+    if not is_valid_deck_extension(path):
         return False
 
     with open(path, "r", encoding=JSON_ENCODING) as f:
@@ -38,3 +38,9 @@ def is_valid_deck_file(path: str) -> bool:
 
         except json.JSONDecodeError:
             return False
+
+
+def is_valid_deck_extension(path: str) -> bool:
+    if path.endswith(DECKS_EXTENSION):
+        return True
+    return False

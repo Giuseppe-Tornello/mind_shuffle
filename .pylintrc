@@ -23,6 +23,7 @@ analyse-fallback-blocks=no
 # run arbitrary code.
 extension-pkg-allow-list=PySide6
 
+
 # A comma-separated list of package or module names from where C extensions may
 # be loaded. Extensions are loading into the active Python interpreter and may
 # run arbitrary code. (This is an alternative name to extension-pkg-allow-list

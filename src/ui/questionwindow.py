@@ -1,6 +1,5 @@
-import sys
-from PySide6.QtWidgets import QApplication, QWidget, QTextEdit, QVBoxLayout, QSizePolicy, QPushButton
-from ..data.ui_constants import QUESTION_WIN_SIZE, PLACEHOLDER_TXT, ENTER_BUTTON
+from PySide6.QtWidgets import QWidget, QTextEdit, QVBoxLayout, QSizePolicy, QPushButton
+from .ui_constants import QUESTION_WIN_SIZE, PLACEHOLDER_TXT, ENTER_BUTTON
 
 
 class QuestionWindow(QWidget):
@@ -34,10 +33,8 @@ class QuestionWindow(QWidget):
 
         self.setLayout(layout)
 
-
     def get_answer(self) -> str:
         return self.user_box.toPlainText()
-
 
     def on_submit(self):
         """Prints answer and closes QuestionWindow."""
@@ -45,7 +42,12 @@ class QuestionWindow(QWidget):
         print("User answer: ", answer)
         self.close()
 
-""" USAGE SAMPLE: (keep until this module is not implemented in main)
+
+# USAGE SAMPLE: (keep until this module is not implemented in main)
+"""
+import sys
+
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 

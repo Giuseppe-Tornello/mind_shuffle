@@ -1,2 +1,4 @@
 PyQt6==6.10.0
 PySide6==6.10.0
+requests==2.32.*
+types-requests==2.32.*

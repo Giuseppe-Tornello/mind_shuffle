@@ -1,13 +1,14 @@
 import json
 import os
-from .data.constants import JSON_ENCODING, USER_PATH, DECKS_PATH, DECKS_EXTENSION
+from .data.constants import JSON_ENCODING, DECKS_PATH, DECKS_EXTENSION
+
 
 def _deck_name_to_path(name: str) -> str:
     """formats the deck name into a full relative path"""
     return DECKS_PATH + name + DECKS_EXTENSION
 
 
-def card_from_strings(question: str, answer: str, tip: str|None, tags: list[str]) -> dict:
+def card_from_strings(question: str, answer: str, tip: str | None, tags: list[str]) -> dict:
     """creates a flash card from the args"""
 
     card = {
@@ -15,7 +16,7 @@ def card_from_strings(question: str, answer: str, tip: str|None, tags: list[str]
         "answer": answer,
         "tip": tip,
         "tags": tags,
-        "id" : None
+        "id": None
     }
     return card
 
@@ -35,15 +36,15 @@ def write_card(card: dict, deck_name: str) -> None:
                 deck = json.load(f)
                 head = deck[len(deck) - 1]
                 next_id = head.get("id") + 1
-            
-            except json.JSONDecodeError: 
+
+            except json.JSONDecodeError:
                 # if the deck is not correctly formatted it's overwritten
                 deck = []
                 next_id = 0
-    
+
     card.update({'id': next_id})
     deck.append(card)
-    
+
     with open(path, "w", encoding=JSON_ENCODING) as f:
         json.dump(deck, f, ensure_ascii=False, indent=2)
 
@@ -55,13 +56,13 @@ def delete_card(card_id: int, deck_name: str) -> None:
 
     if not os.path.exists(path):
         return
-    
+
     with open(path, "r", encoding=JSON_ENCODING) as f:
         try:
             deck = json.load(f)
-        except json.JSONDecodeError: 
+        except json.JSONDecodeError:
             return
-    
+
     for i, card in enumerate(deck, start=0):
         if card.get('id') == card_id:
             deck.pop(i)
@@ -74,10 +75,10 @@ def delete_card(card_id: int, deck_name: str) -> None:
 def import_deck(deck: list[dict], deck_name: str) -> None:
     """
     imports a whole deck locally. its intended use its related to
-    remotely downloaded json files. it does not overwrite already existing decks 
+    remotely downloaded json files. it does not overwrite already existing decks
     with the same name.
     """
-    
+
     path = _deck_name_to_path(deck_name)
     i = 0
 

@@ -15,12 +15,12 @@ class QuestionWindow(QWidget):
         self.readonly_box = QTextEdit()
         self.readonly_box.setReadOnly(True)
         self.readonly_box.setText(question)
-        self.readonly_box.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.readonly_box.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
 
         # --- Editable box ---
         self.user_box = QTextEdit()
         self.user_box.setPlaceholderText(PLACEHOLDER_TXT)
-        self.user_box.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.user_box.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
 
         # --- ENTER button ---
         self.button = QPushButton(ENTER_BUTTON)

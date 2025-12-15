@@ -25,7 +25,7 @@ class QuestionWindow(QWidget):
         # --- ENTER button ---
         self.button = QPushButton(ENTER_BUTTON)
         self.button.setDefault(True)
-        self.button.clicked.connect(self.on_submit)
+        self.button.clicked.connect(self.on_submit)  # pylint: disable=no-member
 
         layout.addWidget(self.readonly_box)
         layout.addWidget(self.user_box)
@@ -44,6 +44,7 @@ class QuestionWindow(QWidget):
 
 
 # USAGE SAMPLE: (keep until this module is not implemented in main)
+# pylint: disable=pointless-string-statement
 """
 import sys
 

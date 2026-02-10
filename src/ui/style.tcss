@@ -1,0 +1,523 @@
+Screen {
+    background: #0b1020;
+    color: #e6edf7;
+}
+
+$menu-title-height: 3;
+$menu-title-padding-x: 1;
+
+#main {
+    padding: 1;
+}
+
+#sidebar {
+    width: 26;
+    border: round #3b82f6;
+    background: #11162a;
+    padding: 1 1;
+}
+
+#menu_title {
+    height: $menu-title-height;
+    padding: 0 $menu-title-padding-x;
+    text-style: bold;
+    color: #93c5fd;
+    margin: 0 0 1 0;
+    content-align: left middle;
+}
+
+#menu {
+    width: 100%;
+    border: round #334155;
+    background: #0f172a;
+}
+
+#menu Button {
+    width: 100%;
+    min-width: 100%;
+    height: 3;
+    padding: 0 1;
+    background: #0f172a;
+    color: #e2e8f0;
+    border: none;
+    text-align: left;
+}
+
+#menu Button:focus,
+#menu Button.-active {
+    background: #334155;
+    color: #f8fafc;
+    text-style: bold;
+}
+
+#content {
+    width: 1fr;
+    border: round #14b8a6;
+    background: #121a30;
+    margin-left: 1;
+    height: 1fr;
+}
+
+#content_scroll {
+    width: 1fr;
+    height: 1fr;
+    padding: 1 2;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+#question_menu,
+#show_results,
+#deck_selector,
+#deck_manager,
+#deck_creator,
+#deck_editor,
+#deck_importer,
+#home_view {
+    background: transparent;
+    padding: 0;
+    width: 100%;
+}
+
+#question_menu,
+#show_results,
+#deck_selector,
+#deck_manager,
+#deck_manager_actions_view,
+#deck_creator,
+#deck_editor,
+#deck_importer {
+    height: 1fr;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#home_view {
+    align: center middle;
+    width: 1fr;
+    height: 1fr;
+}
+
+#home_logo {
+    width: auto;
+    height: auto;
+    content-align: center middle;
+    color: #cbd5e1;
+}
+
+#question_menu_title,
+#show_results_title,
+#deck_selector_title,
+#deck_manager_title,
+#deck_manager_actions_title,
+#deck_creator_title,
+#deck_editor_title,
+#deck_importer_title {
+    height: $menu-title-height;
+    padding: 0 $menu-title-padding-x;
+    text-style: bold;
+    color: #f9a8d4;
+    margin-bottom: 1;
+    content-align: left middle;
+}
+
+#question_progress,
+#question_tip {
+    color: #cbd5e1;
+    margin-bottom: 1;
+}
+
+.field_label,
+#question_input_label,
+#deck_editor_label {
+    color: #cbd5e1;
+    margin-bottom: 1;
+}
+
+#question_text,
+#question_user_input,
+#question_answer,
+#question_stats {
+    margin-bottom: 1;
+}
+
+#question_user_input {
+    border: round #22d3ee;
+    background: #0e162b;
+    color: #f8fafc;
+}
+
+#question_actions {
+    height: auto;
+}
+
+#question_actions Button,
+#show_results_home {
+    width: auto;
+    min-width: 10;
+    height: 3;
+    padding: 0 1;
+    border: round #64748b;
+    background: #1a243d;
+    color: #e2e8f0;
+}
+
+#btn_reveal {
+    border: round #38bdf8;
+    color: #e0f2fe;
+}
+
+#btn_correct {
+    border: round #4ade80;
+    color: #dcfce7;
+}
+
+#btn_wrong {
+    border: round #f87171;
+    color: #fee2e2;
+}
+
+#btn_prev,
+#btn_next {
+    border: round #fbbf24;
+    color: #fef3c7;
+}
+
+#btn_finish,
+#show_results_home {
+    border: round #a78bfa;
+    color: #ede9fe;
+}
+
+#btn_home {
+    border: round #2dd4bf;
+    color: #ccfbf1;
+}
+
+#show_results_correct,
+#show_results_wrong,
+#show_results_total,
+#show_results_accuracy {
+    margin-bottom: 1;
+}
+
+#deck_selector_list {
+    width: 100%;
+    border: round #60a5fa;
+    background: #0f172a;
+}
+
+#deck_creator Input {
+    margin-bottom: 1;
+    border: round #22d3ee;
+    background: #0e162b;
+    color: #f8fafc;
+}
+
+#deck_editor Input {
+    margin-bottom: 1;
+    border: round #22d3ee;
+    background: #0e162b;
+    color: #f8fafc;
+}
+
+#deck_importer Input {
+    margin-bottom: 1;
+    border: round #22d3ee;
+    background: #0e162b;
+    color: #f8fafc;
+}
+
+#deck_name_display {
+    text-style: bold;
+    color: #93c5fd;
+    margin-bottom: 1;
+}
+
+#deck_creator_actions {
+    height: auto;
+    margin-bottom: 1;
+}
+
+#deck_editor_actions {
+    height: auto;
+    margin-bottom: 1;
+}
+
+#deck_manager_actions,
+#deck_manager_actions_row,
+#deck_editor_select_row {
+    height: auto;
+    margin-bottom: 1;
+    align: left middle;
+}
+
+#deck_manager_delete_confirm_row {
+    display: none;
+    height: auto;
+    margin-bottom: 1;
+    padding: 1 2;
+    align: left middle;
+    border: round #f87171;
+    background: #2a1220;
+}
+
+#deck_manager_delete_confirm_text {
+    width: 1fr;
+    margin-right: 1;
+    color: #fee2e2;
+    content-align: left middle;
+}
+
+#deck_manager_back {
+    width: auto;
+    min-width: 10;
+    height: 3;
+    border: round #64748b;
+    background: #1a243d;
+    color: #e2e8f0;
+}
+
+#deck_manager_rename_row {
+    height: auto;
+    margin-bottom: 1;
+}
+
+#deck_manager_rename_row Input {
+    width: 1fr;
+    margin-right: 1;
+}
+
+#deck_editor_jump_row {
+    height: auto;
+    margin-bottom: 1;
+    align: left middle;
+}
+
+#deck_editor_jump_row Input {
+    width: 8;
+    margin: 0 1;
+    text-align: center;
+}
+
+#deck_editor_selected_name {
+    width: 1fr;
+    min-width: 16;
+    height: 3;
+    padding: 0 1;
+    margin: 0 1;
+    border: round #22d3ee;
+    background: #0e162b;
+    color: #f8fafc;
+    content-align: left middle;
+}
+
+#deck_manager_selected_name {
+    width: 1fr;
+    min-width: 16;
+    height: 3;
+    padding: 0 1;
+    margin: 0 1;
+    border: round #22d3ee;
+    background: #0e162b;
+    color: #f8fafc;
+    content-align: left middle;
+}
+
+#deck_manager_list {
+    width: 100%;
+    max-height: 8;
+    border: round #60a5fa;
+    background: #0f172a;
+    margin-bottom: 1;
+}
+
+#deck_manager_actions_name {
+    text-style: bold;
+    color: #93c5fd;
+    margin-bottom: 1;
+}
+
+#deck_manager_actions_count {
+    margin-bottom: 1;
+    color: #cbd5e1;
+}
+
+#deck_importer_actions {
+    height: auto;
+    margin-bottom: 1;
+}
+
+#create_deck_button,
+#deck_creator_back,
+#deck_editor_prev_deck,
+#deck_editor_next_deck,
+#deck_manager_create,
+#deck_manager_open,
+#deck_manager_back,
+#deck_manager_duplicate,
+#deck_manager_edit,
+#deck_manager_delete,
+#deck_manager_delete_cancel,
+#deck_manager_delete_confirm,
+#deck_editor_create,
+#create_card_button,
+#save_deck_button,
+#deck_editor_prev,
+#deck_editor_next,
+#deck_editor_new,
+#deck_editor_remove,
+#deck_editor_back,
+#deck_editor_cancel,
+#deck_editor_save,
+#deck_editor_delete {
+    width: auto;
+    min-width: 14;
+    height: 3;
+    background: #1a243d;
+}
+
+#deck_editor_jump_row #deck_editor_prev,
+#deck_editor_jump_row #deck_editor_next {
+    min-width: 5;
+    width: 5;
+}
+
+#create_deck_button {
+    border: round #38bdf8;
+    color: #e0f2fe;
+}
+
+#deck_creator_back {
+    border: round #64748b;
+    color: #e2e8f0;
+}
+
+#deck_editor_create {
+    width: auto;
+    min-width: 12;
+    border: round #38bdf8;
+    color: #e0f2fe;
+}
+
+#deck_manager_create,
+#deck_manager_open,
+#deck_manager_duplicate,
+#deck_manager_edit {
+    border: round #38bdf8;
+    color: #e0f2fe;
+}
+
+#deck_manager_rename {
+    width: auto;
+    min-width: 10;
+    height: 3;
+    border: round #64748b;
+    background: #1a243d;
+    color: #e2e8f0;
+}
+
+#deck_manager_delete {
+    border: round #f87171;
+    color: #fee2e2;
+}
+
+#deck_manager_delete_cancel {
+    border: round #64748b;
+    color: #e2e8f0;
+}
+
+#deck_manager_delete_confirm {
+    border: round #f87171;
+    color: #fee2e2;
+}
+
+#deck_editor_prev_deck,
+#deck_editor_next_deck {
+    width: auto;
+    min-width: 8;
+    border: round #64748b;
+    color: #e2e8f0;
+}
+
+#create_card_button {
+    border: round #fbbf24;
+    color: #fef3c7;
+}
+
+#save_deck_button {
+    border: round #4ade80;
+    color: #dcfce7;
+}
+
+#deck_editor_prev,
+#deck_editor_next {
+    border: round #fbbf24;
+    color: #fef3c7;
+}
+
+#deck_editor_new {
+    border: round #38bdf8;
+    color: #e0f2fe;
+}
+
+#deck_editor_remove {
+    border: round #f87171;
+    color: #fee2e2;
+}
+
+#deck_editor_back,
+#deck_editor_cancel {
+    border: round #64748b;
+    color: #e2e8f0;
+}
+
+#deck_editor_save {
+    border: round #4ade80;
+    color: #dcfce7;
+}
+
+#deck_editor_go_to {
+    width: auto;
+    min-width: 8;
+    border: round #64748b;
+    color: #e2e8f0;
+}
+
+#deck_editor_delete {
+    border: round #f87171;
+    color: #fee2e2;
+}
+
+#deck_importer_button {
+    width: auto;
+    min-width: 14;
+    height: 3;
+    border: round #38bdf8;
+    background: #1a243d;
+    color: #e0f2fe;
+}
+
+#deck_creator_summary {
+    margin-bottom: 1;
+    color: #cbd5e1;
+}
+
+#deck_creator_status {
+    margin-top: 1;
+    color: #cbd5e1;
+}
+
+#deck_editor_progress,
+#deck_manager_label,
+#deck_manager_count,
+#deck_manager_status,
+#deck_editor_status {
+    margin-top: 1;
+    color: #cbd5e1;
+}
+
+#deck_importer_status {
+    margin-top: 1;
+    color: #cbd5e1;
+}

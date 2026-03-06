@@ -6,13 +6,13 @@ from src import deckimport
 
 
 class DeckImporterService:
-    """Logica di import di un mazzo remoto."""
+    """Logic for importing a remote deck."""
 
     def import_from_url(self, url: str, deck_name: str) -> tuple[str, str]:
         """
-        Importa un mazzo da URL e restituisce:
-        - uno stato sintetico per la UI
-        - il nome finale del mazzo, se disponibile
+        Import a deck from a URL and return:
+        - a compact UI status code
+        - the final deck name, when available
         """
         normalized_url = url.strip()
         if not normalized_url:
@@ -30,7 +30,7 @@ class DeckImporterService:
         return ("success", resolved_name)
 
     def name_from_url(self, url: str) -> str:
-        """Estrae un nome mazzo di fallback dal path finale dell'URL."""
+        """Extract a fallback deck name from the final URL path."""
         parsed = urlparse(url)
         filename = PurePosixPath(parsed.path).name
         if not filename.endswith(".json"):

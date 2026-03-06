@@ -9,13 +9,13 @@ from src.ui import ui_constants
 
 
 class DeckManager(Widget):
-    """Hub di gestione mazzi: selezione via lista scrollabile, rename e accesso alle azioni."""
+    """Deck management hub with list selection, rename, and action shortcuts."""
 
     class CreateDeckRequested(Message):
-        """Richiede la schermata di creazione di un mazzo vuoto."""
+        """Request the empty deck creation screen."""
 
     class OpenDeckActionsRequested(Message):
-        """Richiede la schermata azioni per il mazzo corrente."""
+        """Request the actions screen for the current deck."""
 
         def __init__(self, deck_name: str) -> None:
             super().__init__()

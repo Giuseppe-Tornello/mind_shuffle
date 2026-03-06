@@ -10,7 +10,7 @@ from src.deck_editor_storage import (
 
 
 class DeckEditorSession:
-    """Stato e logica dell'editor mazzi."""
+    """State and logic for the deck editor."""
 
     def __init__(self, initial_deck_name: str = "") -> None:
         self.initial_deck_name = initial_deck_name
@@ -28,7 +28,7 @@ class DeckEditorSession:
         return bool(self.decks)
 
     def selected_or_first_deck(self) -> str:
-        """Preferisce il mazzo richiesto dal caller, altrimenti usa il primo disponibile."""
+        """Prefer the caller-selected deck, otherwise use the first available one."""
         if self.initial_deck_name in self.decks:
             return self.initial_deck_name
         if self.decks:
@@ -36,7 +36,7 @@ class DeckEditorSession:
         return ""
 
     def load_selected_deck(self, deck_name: str) -> bool:
-        """Carica il mazzo reale e ne prepara una working copy modificabile in memoria."""
+        """Load the persisted deck and prepare an editable in-memory working copy."""
         try:
             loaded_cards = load_deck_cards(deck_name)
         except (OSError, json.JSONDecodeError):
@@ -59,7 +59,7 @@ class DeckEditorSession:
         return (self.current_index + 1, len(self.cards))
 
     def go_to_card(self, card_number: int) -> bool:
-        """Posiziona l'editor su una carta specifica usando numerazione 1-based."""
+        """Move the editor to a specific card using 1-based numbering."""
         if not self.cards:
             return False
         if card_number < 1 or card_number > len(self.cards):
@@ -74,8 +74,8 @@ class DeckEditorSession:
         tip: str,
         tags_text: str,
     ) -> None:
-        # La UI passa stringhe grezze; la sessione si occupa di normalizzarle
-        # nel formato persistito su disco.
+        # The UI passes raw strings; the session normalizes them
+        # into the format persisted on disk.
         if not self.cards:
             return
         tags = [tag.strip() for tag in tags_text.split(",") if tag.strip()]
@@ -98,13 +98,13 @@ class DeckEditorSession:
         self.current_index = (self.current_index + 1) % len(self.cards)
 
     def add_card(self) -> None:
-        """Aggiunge una carta vuota e la rende quella attiva."""
+        """Add an empty card and make it the active one."""
         self.cards.append(empty_card(len(self.cards) + 1))
         self.current_index = len(self.cards) - 1
         self.is_dirty = True
 
     def remove_current_card(self) -> None:
-        """Rimuove la carta attiva dalla working copy senza toccare il file reale."""
+        """Remove the active card from the working copy without touching the real file."""
         if not self.cards:
             return
         if len(self.cards) == 1:
@@ -118,7 +118,7 @@ class DeckEditorSession:
         self.is_dirty = True
 
     def discard_changes(self) -> None:
-        """Ripristina la working copy all'ultima versione confermata su disco."""
+        """Restore the working copy to the last version confirmed on disk."""
         self.cards = [card.copy() for card in self.original_cards]
         if not self.cards:
             self.cards = [empty_card(1)]
@@ -127,7 +127,7 @@ class DeckEditorSession:
         self.is_dirty = False
 
     def change_selected_deck(self, step: int) -> bool:
-        """Scorre ciclicamente i mazzi, ma solo se non ci sono modifiche pendenti."""
+        """Cycle through decks, but only when there are no pending changes."""
         if len(self.decks) <= 1 or self.is_dirty:
             return False
         current_index = self.decks.index(self.deck_name) if self.deck_name in self.decks else 0
@@ -142,7 +142,7 @@ class DeckEditorSession:
         tags_text: str,
     ) -> str:
         """
-        Salva il mazzo attivo sovrascrivendo il file reale con la working copy.
+        Save the active deck by overwriting the real file with the working copy.
         """
         self.save_current_card_fields(question, answer, tip, tags_text)
         if not self.deck_name:
@@ -150,7 +150,7 @@ class DeckEditorSession:
         if not self.cards_are_valid():
             return "card_error"
 
-        # Solo qui la working copy diventa definitiva e sovrascrive il file reale.
+        # Only here does the working copy become definitive and replace the real file.
         save_deck_cards(self.deck_name, self.cards)
         self.decks = load_deck_names()
         self.original_cards = [card.copy() for card in self.cards]
@@ -158,7 +158,7 @@ class DeckEditorSession:
         return "saved"
 
     def delete_current_deck(self) -> str:
-        """Elimina il mazzo attivo e, se possibile, seleziona il successivo disponibile."""
+        """Delete the active deck and, when possible, select the next available one."""
         if not self.deck_name:
             return "delete_error"
 
@@ -176,7 +176,7 @@ class DeckEditorSession:
         return deleted_name
 
     def cards_are_valid(self) -> bool:
-        """Valida le carte e riallinea gli id prima del salvataggio."""
+        """Validate cards and realign ids before saving."""
         for index, card in enumerate(self.cards, start=1):
             if not card["question"] or not card["answer"]:
                 return False

@@ -2,7 +2,7 @@ from src.deck_editor_storage import delete_deck, load_deck_names, load_raw_deck_
 
 
 class DeckManagerSession:
-    """Stato e logica della schermata hub per la gestione dei mazzi."""
+    """State and logic for the deck management hub screen."""
 
     def __init__(self, initial_deck_name: str = "") -> None:
         self.decks = load_deck_names()

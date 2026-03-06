@@ -21,10 +21,10 @@ class DeckData(TypedDict):
 
 
 class DeckSelector(Widget):
-    """Selettore dei mazzi disponibili per avviare la sessione di ripasso."""
+    """Selector for available decks used to start a review session."""
 
     class DeckChosen(Message):
-        """Evento emesso quando l'utente sceglie un mazzo."""
+        """Event emitted when the user chooses a deck."""
 
         def __init__(self, deck_name: str, cards: list[CardData]) -> None:
             super().__init__()

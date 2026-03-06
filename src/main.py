@@ -1,4 +1,4 @@
-"""Entry point principale dell'applicazione."""
+"""Main application entry point."""
 # pylint: disable=wrong-import-position,too-many-public-methods
 
 from pathlib import Path
@@ -11,9 +11,9 @@ from textual.events import Key
 from textual.widget import Widget
 from textual.widgets import ListView, Select, Static
 
-# Supporta sia `python -m src.main` sia `python src/main.py`.
-# Nel secondo caso Python non aggiunge automaticamente la root del progetto
-# ai percorsi di import del package `src`.
+# Support both `python -m src.main` and `python src/main.py`.
+# In the second case Python does not automatically add the project root
+# to the import paths for the `src` package.
 if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
@@ -32,7 +32,7 @@ from src.ui.show_results import ShowResults
 from src.ui.side_menu import SideMenu
 
 class MainApp(App):
-    """App principale: routing, layout e gestione focus."""
+    """Main app with routing, layout, and focus management."""
 
     CSS_PATH = str(Path(__file__).resolve().parent / "ui" / "style.tcss")
     BINDINGS = [
@@ -49,9 +49,9 @@ class MainApp(App):
         self.active_block = "sidebar"
 
     def compose(self) -> ComposeResult:
-        # La shell principale ha due blocchi:
-        # - sidebar a sinistra
-        # - contenuto scrollabile a destra
+        # The main shell has two areas:
+        # - the sidebar on the left
+        # - the scrollable content panel on the right
         with Horizontal(id="main"):
             yield SideMenu()
             with Container(id="content"):
@@ -152,8 +152,8 @@ class MainApp(App):
 
     def show_screen(self, menu_name: str, focus_content: bool = True) -> None:
         current_content = self.current_content_widget()
-        # Alcune schermate espongono `has_unsaved_changes` / `warn_unsaved_changes`.
-        # Il controller usa questi hook opzionali senza conoscere il tipo concreto del widget.
+        # Some screens expose `has_unsaved_changes` / `warn_unsaved_changes`.
+        # The controller uses these optional hooks without knowing the concrete widget type.
         if self.controller.should_block_navigation(
             current_content=current_content,
             menu_name=menu_name,
@@ -180,10 +180,10 @@ class MainApp(App):
     def show_widget(self, content_widget: Widget, focus_content: bool = True) -> None:
         content_widget.styles.width = "1fr"
         if isinstance(content_widget, HomeView):
-            # La home occupa tutta l'area disponibile per centrare il logo.
+            # The home view fills the available area so the logo stays centered.
             content_widget.styles.height = "1fr"
         else:
-            # Le altre schermate hanno altezza naturale e scorrono nel contenitore esterno.
+            # Other screens keep their natural height and scroll in the outer container.
             content_widget.styles.height = "auto"
         content_area = self.content_area()
         content_area.remove_children()
@@ -195,8 +195,8 @@ class MainApp(App):
             self.call_later(self.action_focus_sidebar)
 
     def create_content_widget(self, data: dict[str, object]) -> Widget:
-        # Questo metodo è il solo punto che traduce la configurazione di routing
-        # in istanze reali dei widget UI.
+        # This is the single place that translates route configuration
+        # into actual UI widget instances.
         content_type = data["type"]
         if content_type == "text":
             return Static(str(data["content"]))
@@ -264,7 +264,7 @@ class MainApp(App):
         key = event.key
         is_ctrl = "ctrl+" in key or bool(getattr(event, "ctrl", False))
 
-        # Ctrl+Left / Ctrl+Right spostano il focus fra i due blocchi principali.
+        # Ctrl+Left / Ctrl+Right move focus between the two main areas.
         if self.matches_direction(key, "left") and is_ctrl:
             self.action_focus_sidebar()
             event.stop()
@@ -274,8 +274,8 @@ class MainApp(App):
             event.stop()
             return
         if not is_ctrl and self.active_block == "sidebar":
-            # Nella sidebar le frecce cambiano solo la selezione;
-            # il contenuto si apre esplicitamente con Enter.
+            # In the sidebar, arrows only move the selection;
+            # Enter explicitly opens the selected content.
             if self.matches_direction(key, "up"):
                 self.move_sidebar_selection(step=-1)
                 event.stop()
@@ -311,8 +311,8 @@ class MainApp(App):
         for widget in self.content_area().query("*"):
             if not getattr(widget, "can_focus", False):
                 continue
-            # I contenitori scrollabili fanno da layout e non devono entrare
-            # nel ciclo di focus "utile" per l'utente.
+            # Scrollable containers are layout helpers and should not be part
+            # of the user-facing focus cycle.
             if isinstance(widget, VerticalScroll):
                 continue
             if getattr(widget, "disabled", False):
@@ -341,8 +341,8 @@ class MainApp(App):
         if current in focusables:
             current_index = focusables.index(current)
         else:
-            # Se il focus non è su un widget noto, ripartiamo dall'inizio o dalla fine
-            # a seconda della direzione richiesta.
+            # If focus is not on a known widget, restart from the beginning or end
+            # depending on the requested direction.
             current_index = -1 if step > 0 else 0
         next_index = (current_index + step) % len(focusables)
         focusables[next_index].focus()
@@ -357,8 +357,8 @@ class MainApp(App):
 
     def should_move_with_key(self, key: str, direction: str, is_ctrl: bool) -> bool:
         focused = self.screen.focused
-        # Alcuni widget (Select, ListView) usano già up/down internamente:
-        # in quel caso non dobbiamo intercettare i tasti a livello app.
+        # Some widgets (Select, ListView) already use up/down internally.
+        # In that case the app should not intercept those keys.
         if not is_ctrl and self.content_widget_uses_direction_key(focused, direction):
             return False
         return (is_ctrl and self.matches_direction(key, direction)) or (

@@ -2,7 +2,7 @@ from src.ui import ui_constants
 
 
 class MainAppController:
-    """Logica di routing non-UI per MainApp."""
+    """Non-UI routing logic for MainApp."""
 
     def __init__(self) -> None:
         self.menu_config = ui_constants.MENU_PAGES
@@ -19,8 +19,8 @@ class MainAppController:
         menu_name: str,
         edit_menu_name: str,
     ) -> bool:
-        # Il controller non dipende dalle classi UI concrete:
-        # si limita a usare un piccolo protocollo duck-typed.
+        # The controller does not depend on concrete UI classes:
+        # it only uses a small duck-typed protocol.
         if current_content is None:
             return False
         has_unsaved_changes = getattr(current_content, "has_unsaved_changes", None)

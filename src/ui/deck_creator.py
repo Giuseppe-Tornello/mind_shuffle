@@ -9,21 +9,21 @@ from src.ui import ui_constants
 
 
 class DeckCreator(Widget):
-    """Schermata minima per creare un mazzo vuoto.
+    """Minimal screen used to create an empty deck.
 
-    Il widget non decide come creare il deck: delega tutto al service e
-    si limita a raccogliere input e mostrare lo stato.
+    The widget does not decide how deck creation works: it delegates to the service
+    and only collects input and renders status feedback.
     """
 
     class DeckCreated(Message):
-        """Notifica la creazione di un nuovo mazzo."""
+        """Notify that a new deck has been created."""
 
         def __init__(self, deck_name: str) -> None:
             super().__init__()
             self.deck_name = deck_name
 
     class BackRequested(Message):
-        """Richiede il ritorno alla schermata precedente del flusso mazzi."""
+        """Request navigation back to the previous deck flow screen."""
 
         def __init__(self, deck_name: str = "") -> None:
             super().__init__()
@@ -77,8 +77,8 @@ class DeckCreator(Widget):
         if not deck_name:
             self._status().update(ui_constants.DECK_CREATOR_DECK_ERROR)
             return
-        # La schermata padre usa questo messaggio per rientrare in DeckEditor
-        # con il nuovo mazzo già selezionato.
+        # The parent screen uses this message to reopen DeckEditor
+        # with the newly created deck already selected.
         self._status().update(ui_constants.DECK_CREATOR_SUCCESS.format(deck_name=deck_name))
         self.post_message(self.DeckCreated(deck_name))
 

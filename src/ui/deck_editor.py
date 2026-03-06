@@ -9,23 +9,23 @@ from src.ui import ui_constants
 
 
 class DeckEditor(Widget):
-    """Contenitore UI dell'editor mazzi.
+    """UI container for the deck editor.
 
-    Lo stato reale vive in `DeckEditorSession`: questo widget si occupa solo di
-    mostrare i campi, raccogliere eventi Textual e sincronizzare i valori.
-    L'editing avviene sempre su una working copy in memoria: il file reale viene
-    aggiornato soltanto quando l'utente conferma con "Salva modifiche".
+    The real state lives in `DeckEditorSession`: this widget only renders fields,
+    receives Textual events, and keeps values synchronized.
+    Editing always happens against an in-memory working copy: the real file is
+    updated only when the user confirms with "Save changes".
     """
 
     class BackRequested(Message):
-        """Richiede il ritorno alla schermata azioni del mazzo corrente."""
+        """Request navigation back to the current deck actions screen."""
 
         def __init__(self, deck_name: str) -> None:
             self.deck_name = deck_name
             super().__init__()
 
     class CreateDeckRequested(Message):
-        """Richiede l'apertura della schermata crea mazzo."""
+        """Request opening the create-deck screen."""
 
     def __init__(self, create_mode: bool = False, initial_deck_name: str = "") -> None:
         super().__init__()
@@ -96,8 +96,8 @@ class DeckEditor(Widget):
         if event.input.id == "deck_editor_card_number":
             return
         if self._suspend_dirty_tracking:
-            # Evita di segnare come "modifiche utente" gli update fatti dalla UI
-            # quando ricarica un mazzo o cambia carta.
+            # Avoid marking UI-driven refreshes as user edits
+            # when a deck is reloaded or the selected card changes.
             return
         self.session.is_dirty = not self._inputs_match_session()
 
@@ -186,8 +186,8 @@ class DeckEditor(Widget):
         self._sync_inputs_from_session()
 
     def _store_current_inputs(self) -> None:
-        # Prima di cambiare carta o mazzo, riversiamo i valori correnti
-        # negli oggetti della sessione.
+        # Before changing card or deck, push the current field values
+        # into the session objects.
         self.session.save_current_card_fields(
             question=self._input("deck_editor_question").value,
             answer=self._input("deck_editor_answer").value,
@@ -196,8 +196,8 @@ class DeckEditor(Widget):
         )
 
     def _sync_inputs_from_session(self) -> None:
-        # Direzione opposta rispetto a `_store_current_inputs`:
-        # qui la sessione diventa la sorgente di verita' per i widget.
+        # This is the reverse direction of `_store_current_inputs`:
+        # here the session becomes the source of truth for the widgets.
         card = self.session.current_card()
         current, total = self.session.progress()
         self._set_input_value(self._input("deck_editor_question"), card.get("question", ""))
@@ -239,8 +239,8 @@ class DeckEditor(Widget):
         def clear_dirty() -> None:
             if generation != self._dirty_reset_generation:
                 return
-            # Alcuni Changed arrivano dopo il refresh del frame: il reset differito
-            # impedisce di marcare come dirty il semplice caricamento iniziale.
+            # Some Changed events arrive after the frame refresh: delaying the reset
+            # prevents the initial load from being marked as dirty.
             self.session.is_dirty = not self._inputs_match_session()
 
         self.call_after_refresh(clear_dirty)

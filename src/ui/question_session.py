@@ -2,7 +2,7 @@ from src.ui.card_types import CardData
 
 
 class QuestionSession:
-    """Stato e logica della sessione di allenamento."""
+    """State and logic for the training session."""
 
     def __init__(self, cards: list[CardData] | None = None) -> None:
         self.cards: list[CardData] = [

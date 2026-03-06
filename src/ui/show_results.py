@@ -8,10 +8,10 @@ from src.ui import ui_constants
 
 
 class ShowResults(Widget):
-    """Schermata riepilogativa mostrata a fine sessione."""
+    """Summary screen shown at the end of a session."""
 
     class GoHome(Message):
-        """Richiede il ritorno alla schermata home."""
+        """Request navigation back to the home screen."""
 
     def __init__(self, correct_answers: int, wrong_answers: int) -> None:
         super().__init__()

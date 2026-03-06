@@ -8,10 +8,10 @@ from src.ui import ui_constants
 
 
 class DeckImporter(Widget):
-    """UI per importare un mazzo remoto via URL JSON.
+    """UI for importing a remote deck from a JSON URL.
 
-    Anche qui il widget resta "stupido": il service restituisce uno stato
-    semplificato che la UI traduce in messaggi per l'utente.
+    This widget stays intentionally thin: the service returns a simplified status
+    that the UI translates into user-facing messages.
     """
 
     def __init__(self) -> None:
@@ -51,8 +51,8 @@ class DeckImporter(Widget):
             url=url,
             deck_name=self._input("deck_importer_name").value,
         )
-        # La UI conosce solo i codici di esito; tutta la logica di import
-        # resta confinata nel service.
+        # The UI only knows the result codes; all import logic
+        # stays confined to the service.
         if result == "invalid_deck":
             status.update(ui_constants.DECK_IMPORTER_INVALID_DECK)
             return

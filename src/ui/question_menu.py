@@ -11,13 +11,13 @@ from src.ui.question_session import QuestionSession
 
 
 class QuestionMenu(Widget):
-    """Widget per allenarsi con domande/risposte."""
+    """Widget used to train with question and answer cards."""
 
     class GoHome(Message):
-        """Richiede il ritorno alla schermata home."""
+        """Request navigation back to the home screen."""
 
     class ShowResultsRequested(Message):
-        """Richiede l'apertura della schermata di report finale."""
+        """Request opening the final results screen."""
 
         def __init__(self, correct_answers: int, wrong_answers: int) -> None:
             super().__init__()
@@ -53,7 +53,7 @@ class QuestionMenu(Widget):
         self._refresh_content()
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
-        # Salviamo sempre il testo corrente prima di cambiare schermata o stato.
+        # Always persist the current input before changing screen or state.
         self._save_current_user_answer()
         focus_input = False
         should_refresh = True
@@ -98,11 +98,11 @@ class QuestionMenu(Widget):
         key = event.key
         focused = self.screen.focused
         if key in {"left", "right"} and isinstance(focused, Input):
-            # Nell'input le frecce orizzontali devono restare disponibili per il cursore.
+            # Inside the input field, horizontal arrows must stay available for the caret.
             return
 
-        # Nel question menu usiamo solo le frecce orizzontali per cambiare domanda.
-        # Le frecce verticali vengono lasciate al contenitore (side_menu) per la navigazione focus.
+        # In the question menu, only horizontal arrows switch between questions.
+        # Vertical arrows stay available to the container for focus navigation.
         if key == "left":
             self._navigate_questions(step=-1)
             event.stop()

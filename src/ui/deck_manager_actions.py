@@ -9,13 +9,13 @@ from src.ui import ui_constants
 
 
 class DeckManagerActions(Widget):
-    """Schermata con le azioni disponibili sul mazzo selezionato."""
+    """Screen showing the available actions for the selected deck."""
 
     class BackRequested(Message):
-        """Richiede il ritorno alla schermata di selezione mazzi."""
+        """Request navigation back to deck selection."""
 
     class DuplicateDeckRequested(Message):
-        """Richiede la creazione di una copia del mazzo corrente."""
+        """Request creation of a copy of the current deck."""
 
         def __init__(self, cards: list[dict], suggested_name: str, source_deck_name: str) -> None:
             super().__init__()
@@ -24,7 +24,7 @@ class DeckManagerActions(Widget):
             self.source_deck_name = source_deck_name
 
     class EditDeckRequested(Message):
-        """Richiede l'apertura dell'editor sul mazzo corrente."""
+        """Request opening the editor for the current deck."""
 
         def __init__(self, deck_name: str) -> None:
             super().__init__()

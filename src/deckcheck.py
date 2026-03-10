@@ -1,22 +1,34 @@
-import json
+from json import load, JSONDecodeError
+from typing import TypedDict
 from .data.constants import CARD_ATTRIBUTES, OPTIONAL_ATTRIBUTES, JSON_ENCODING, DECKS_EXTENSION
 
 
-def is_valid_deck(deck: list[dict]) -> bool:
+class Flashcard(TypedDict):
+    question: str
+    answer: str
+    tip: str
+    tags: list[str]
+    id: int
+
+
+def is_valid_deck(deck: list[Flashcard]) -> bool:
     """checks if the deck is valid"""
-    if deck is None:
+    if len(deck) == 0:
         return False
 
-    previous_id = -1
+    previous_id = 0
     mandatory_attributes = CARD_ATTRIBUTES - OPTIONAL_ATTRIBUTES
     for card in deck:
         wrong_attributes = set(card.keys()) != CARD_ATTRIBUTES
+        if wrong_attributes:
+            return False
 
-        # Checks if all attributes are null or empty, OPTIONAL_ATTRIBUTES excluded
-        has_empty_values = not all(card[attr] for attr in mandatory_attributes)
+
+# Checks if all attributes are null or empty, OPTIONAL_ATTRIBUTES excluded
+        has_empty_values = not all(card[attr] for attr in mandatory_attributes)  # type: ignore[literal-required]
 
         # current card id MUST be < than previous card
-        if wrong_attributes or has_empty_values or card["id"] <= previous_id:
+        if has_empty_values or card["id"] <= previous_id:
             return False
 
         previous_id = card["id"]
@@ -29,18 +41,19 @@ def is_valid_deck_file(path: str) -> bool:
     if not is_valid_deck_extension(path):
         return False
 
-    with open(path, "r", encoding=JSON_ENCODING) as f:
-        try:
-            deck = json.load(f)
+    try:
+        with open(path, "r", encoding=JSON_ENCODING) as f:
+            deck = load(f)
             if not isinstance(deck, list):
                 return False
             return is_valid_deck(deck)
 
-        except json.JSONDecodeError:
-            return False
+    except (FileNotFoundError, OSError):
+        return False
+
+    except JSONDecodeError:
+        return False
 
 
 def is_valid_deck_extension(path: str) -> bool:
-    if path.endswith(DECKS_EXTENSION):
-        return True
-    return False
+    return path.endswith(DECKS_EXTENSION)

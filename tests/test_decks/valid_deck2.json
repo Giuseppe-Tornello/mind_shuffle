@@ -17,7 +17,7 @@
       "python",
       "dict"
     ],
-    "id": 2
+    "id": 3
   },
   {
     "question": "What does len('flashcard') return?",
@@ -27,7 +27,7 @@
       "python",
       "strings"
     ],
-    "id": 3
+    "id": 5
   },
   {
     "question": "What is the output type of range(5)?",
@@ -37,6 +37,6 @@
       "python",
       "iteration"
     ],
-    "id": 5
+    "id": 7
   }
 ]

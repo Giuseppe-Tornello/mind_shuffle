@@ -1,4 +1,4 @@
-from src.deckcheck import is_valid_deck_extension, is_valid_deck_file
+from src.deckcheck import is_valid_deck_extension, is_valid_deck_file, is_valid_deck, Flashcard
 
 
 def test_is_valid_deck_extension() -> None:
@@ -13,21 +13,59 @@ def test_is_valid_deck_extension() -> None:
 
 def test_is_valid_deck_file() -> None:
     TEST_DECKS_PATH = "tests/test_decks/"
-    valid_deck_names = ["valid_deck1.json", "valid_deck2.json"]
+    valid_deck = "valid_deck1.json"
     invalid_deck_names = [
-        "invalid_deck1.json",
-        "invalid_deck2.html",
-        "invalid_deck3.json",
-        "invalid_deck4.json",
-        "invalid_deck5.json",
+        "invalid_deck1.json",  # has two id as '1'
+        "invalid_deck2.html",  # has wrong file extension
+        "invalid_deck3.json",  # invalid json
+        "invalid_deck4.json",  # not a list
+        "invalid_deck5.json",  # does not exist
         ]
 
-    for valid in valid_deck_names:
-        temp_deck_path = TEST_DECKS_PATH + valid
-        assert isinstance(is_valid_deck_file(temp_deck_path), bool)
-        assert is_valid_deck_file(temp_deck_path) is True
+    temp_deck_path = TEST_DECKS_PATH + valid_deck
+    assert isinstance(is_valid_deck_file(temp_deck_path), bool)
+    assert is_valid_deck_file(temp_deck_path) is True
 
     for invalid in invalid_deck_names:
         temp_deck_path = TEST_DECKS_PATH + invalid
         assert isinstance(is_valid_deck_file(temp_deck_path), bool)
         assert is_valid_deck_file(temp_deck_path) is False
+
+
+def test_is_valid_deck() -> None:
+
+    deck: list[Flashcard] = [
+        {"id": 1, "question": "Question 1", "answer": "Answer 1", "tags": ["tag1"], "tip": "tip"},
+        {"id": 2, "question": "Question 2", "answer": "Answer 2", "tags": ["tag2"], "tip": ""}  # tip is empty
+    ]
+    assert isinstance(is_valid_deck(deck), bool)
+    assert is_valid_deck(deck) is True
+
+    invalid_deck0: list[Flashcard] = []
+    invalid_deck1: list[Flashcard] = [
+        {"id": 1, "question": "Question 1", "answer": "Answer 1", "tags": ["tag1"], "tip": "tip"},
+        {"id": 1, "question": "Question 2", "answer": "Answer 2", "tags": ["tag2"], "tip": ""}
+        # id is <= than the previous card
+    ]
+
+    invalid_deck2: list[Flashcard] = [
+        {"id": 1, "question": "Question 1", "answer": "Answer 1", "tags": ["tag1"], "tip": "tip"},
+        {"id": 2, "question": "Question 2", "answer_bla": "Answer 2", "tags": ["tag2"], "tip": ""}  # type: ignore[typeddict-item,typeddict-unknown-key] # noqa: E501
+        # answer_bla is not permitted
+    ]
+
+    invalid_deck3: list[Flashcard] = [
+        {"id": 1, "question": "Question 1", "answer": "Answer 1", "tags": ["tag1"], "tip": "tip"},
+        {"id": 2, "question": "Question 2", "answer": "", "tags": ["tag2"], "tip": ""}  # answer is empty
+    ]
+
+    invalid_decks: list[list[Flashcard]] = [
+        invalid_deck0,
+        invalid_deck1,
+        invalid_deck2,
+        invalid_deck3,
+    ]
+
+    for invalid in invalid_decks:
+        assert isinstance(is_valid_deck(invalid), bool)
+        assert is_valid_deck(invalid) is False

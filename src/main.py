@@ -31,6 +31,7 @@ from src.ui.question_menu import QuestionMenu
 from src.ui.show_results import ShowResults
 from src.ui.side_menu import SideMenu
 
+
 class MainApp(App):
     """Main app with routing, layout, and focus management."""
 

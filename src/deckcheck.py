@@ -1,14 +1,5 @@
 from json import load, JSONDecodeError
-from typing import TypedDict
-from .data.constants import CARD_ATTRIBUTES, OPTIONAL_ATTRIBUTES, JSON_ENCODING, DECKS_EXTENSION
-
-
-class Flashcard(TypedDict):
-    question: str
-    answer: str
-    tip: str
-    tags: list[str]
-    id: int
+from .data.constants import CARD_ATTRIBUTES, OPTIONAL_ATTRIBUTES, JSON_ENCODING, DECKS_EXTENSION, Flashcard
 
 
 def is_valid_deck(deck: list[Flashcard]) -> bool:
@@ -23,8 +14,7 @@ def is_valid_deck(deck: list[Flashcard]) -> bool:
         if wrong_attributes:
             return False
 
-
-# Checks if all attributes are null or empty, OPTIONAL_ATTRIBUTES excluded
+        # Checks if all attributes are null or empty, OPTIONAL_ATTRIBUTES excluded
         has_empty_values = not all(card[attr] for attr in mandatory_attributes)  # type: ignore[literal-required]
 
         # current card id MUST be < than previous card

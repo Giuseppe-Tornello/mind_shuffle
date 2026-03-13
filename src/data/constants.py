@@ -7,6 +7,7 @@ DECKS_EXTENSION = ".json"
 CARD_ATTRIBUTES = {"question", "answer", "tip", "tags", "id"}
 OPTIONAL_ATTRIBUTES = {"tip"}
 JSON_ENCODING = "utf-8"
+JSON_INDENT = 2
 
 
 class Flashcard(TypedDict):

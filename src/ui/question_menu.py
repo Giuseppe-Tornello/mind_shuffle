@@ -44,10 +44,10 @@ class QuestionMenu(Widget):
                 yield Button(ui_constants.QUESTION_MENU_REVEAL_BUTTON, id="btn_reveal", variant="primary")
                 yield Button(ui_constants.QUESTION_MENU_CORRECT_BUTTON, id="btn_correct", variant="success")
                 yield Button(ui_constants.QUESTION_MENU_WRONG_BUTTON, id="btn_wrong", variant="error")
-                yield Button(ui_constants.QUESTION_MENU_PREVIOUS_BUTTON, id="btn_prev")
+                yield Button(ui_constants.ACTION_BACK, id="btn_prev")
                 yield Button(ui_constants.QUESTION_MENU_NEXT_BUTTON, id="btn_next")
                 yield Button(ui_constants.QUESTION_MENU_FINISH_BUTTON, id="btn_finish", variant="warning")
-                yield Button(ui_constants.QUESTION_MENU_HOME_BUTTON, id="btn_home")
+                yield Button(ui_constants.ACTION_HOME, id="btn_home")
 
     def on_mount(self) -> None:
         self._refresh_content()

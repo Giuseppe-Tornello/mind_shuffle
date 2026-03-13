@@ -1,9 +1,7 @@
 """Main application entry point."""
-# pylint: disable=wrong-import-position,too-many-public-methods
+# pylint: disable=too-many-public-methods
 
 from pathlib import Path
-import sys
-from typing import Callable
 
 from textual.app import App, ComposeResult
 from textual.containers import Container, Horizontal, VerticalScroll
@@ -11,13 +9,6 @@ from textual.events import Key
 from textual.widget import Widget
 from textual.widgets import ListView, Select, Static
 
-# Support both `python -m src.main` and `python src/main.py`.
-# In the second case Python does not automatically add the project root
-# to the import paths for the `src` package.
-if __package__ in {None, ""}:
-    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-
-from src.main_app_controller import MainAppController
 from src.ui import ui_constants
 from src.ui.deck_creator import DeckCreator
 from src.ui.deck_editor import DeckEditor
@@ -32,10 +23,43 @@ from src.ui.show_results import ShowResults
 from src.ui.side_menu import SideMenu
 
 
+class MainAppController:
+    """Small routing helper used by MainApp."""
+
+    def get_content_data(self, menu_name: str) -> dict | None:
+        return ui_constants.MENU_PAGES.get(menu_name)
+
+    def should_exit(self, menu_name: str) -> bool:
+        return menu_name == ui_constants.EXIT
+
+    def should_block_navigation(
+        self,
+        current_content: object | None,
+        menu_name: str,
+        edit_menu_name: str,
+    ) -> bool:
+        if current_content is None or menu_name == edit_menu_name:
+            return False
+
+        has_unsaved_changes = getattr(current_content, "has_unsaved_changes", None)
+        if not callable(has_unsaved_changes):
+            return False
+
+        return bool(has_unsaved_changes())
+
+    def warn_unsaved_changes(self, current_content: object | None) -> None:
+        if current_content is None:
+            return
+
+        warning_callback = getattr(current_content, "warn_unsaved_changes", None)
+        if callable(warning_callback):
+            warning_callback()
+
+
 class MainApp(App):
     """Main app with routing, layout, and focus management."""
 
-    CSS_PATH = str(Path(__file__).resolve().parent / "ui" / "style.tcss")
+    CSS_PATH = str(Path(__file__).resolve().parent / "src" / "ui" / "style.tcss")
     BINDINGS = [
         ("ctrl+left", "focus_sidebar", "Sidebar"),
         ("ctrl+right", "focus_content", "Content"),
@@ -50,9 +74,6 @@ class MainApp(App):
         self.active_block = "sidebar"
 
     def compose(self) -> ComposeResult:
-        # The main shell has two areas:
-        # - the sidebar on the left
-        # - the scrollable content panel on the right
         with Horizontal(id="main"):
             yield SideMenu()
             with Container(id="content"):
@@ -86,14 +107,7 @@ class MainApp(App):
         self,
         _: DeckEditor.CreateDeckRequested,
     ) -> None:
-        current_content = self.current_content_widget()
-        if self.controller.should_block_navigation(
-            current_content=current_content,
-            menu_name="deck_creator",
-            edit_menu_name=ui_constants.EDIT_DECK,
-        ):
-            self.controller.warn_unsaved_changes(current_content)
-            self.call_after_refresh(self.action_focus_content)
+        if self._navigation_blocked("deck_creator"):
             return
         self.show_widget(DeckCreator())
 
@@ -101,10 +115,7 @@ class MainApp(App):
         self.show_widget(DeckEditor(initial_deck_name=event.deck_name))
 
     def on_deck_creator_back_requested(self, event: DeckCreator.BackRequested) -> None:
-        if event.deck_name:
-            self.show_widget(DeckManagerActions(event.deck_name))
-            return
-        self.show_widget(DeckManager())
+        self._show_deck_manager_view(event.deck_name)
 
     def on_deck_manager_create_deck_requested(
         self,
@@ -122,7 +133,7 @@ class MainApp(App):
         self,
         _: DeckManagerActions.BackRequested,
     ) -> None:
-        self.show_widget(DeckManager())
+        self._show_deck_manager_view("")
 
     def on_deck_manager_actions_duplicate_deck_requested(
         self,
@@ -146,22 +157,13 @@ class MainApp(App):
         self,
         event: DeckEditor.BackRequested,
     ) -> None:
-        self.show_widget(DeckManagerActions(event.deck_name))
+        self._show_deck_manager_view(event.deck_name)
 
     def show_home(self) -> None:
         self.show_screen(ui_constants.HOME, focus_content=False)
 
     def show_screen(self, menu_name: str, focus_content: bool = True) -> None:
-        current_content = self.current_content_widget()
-        # Some screens expose `has_unsaved_changes` / `warn_unsaved_changes`.
-        # The controller uses these optional hooks without knowing the concrete widget type.
-        if self.controller.should_block_navigation(
-            current_content=current_content,
-            menu_name=menu_name,
-            edit_menu_name=ui_constants.EDIT_DECK,
-        ):
-            self.controller.warn_unsaved_changes(current_content)
-            self.call_after_refresh(self.action_focus_content)
+        if self._navigation_blocked(menu_name):
             return
         if self.controller.should_exit(menu_name):
             self.exit()
@@ -174,48 +176,27 @@ class MainApp(App):
             )
             return
         self.show_widget(
-            self.create_content_widget(content_data),
+            self._build_content_widget(content_data),
             focus_content=focus_content,
         )
 
     def show_widget(self, content_widget: Widget, focus_content: bool = True) -> None:
         content_widget.styles.width = "1fr"
-        if isinstance(content_widget, HomeView):
-            # The home view fills the available area so the logo stays centered.
-            content_widget.styles.height = "1fr"
-        else:
-            # Other screens keep their natural height and scroll in the outer container.
-            content_widget.styles.height = "auto"
+        content_widget.styles.height = self._content_height(content_widget)
         content_area = self.content_area()
         content_area.remove_children()
         content_area.mount(content_widget)
-        if focus_content:
-            self.call_after_refresh(self.action_focus_content)
-        else:
-            self.call_after_refresh(self.action_focus_sidebar)
-            self.call_later(self.action_focus_sidebar)
+        self._schedule_focus(focus_content)
 
-    def create_content_widget(self, data: dict[str, object]) -> Widget:
-        # This is the single place that translates route configuration
-        # into actual UI widget instances.
+    def _build_content_widget(self, data: dict[str, object]) -> Widget:
         content_type = data["type"]
         if content_type == "text":
             return Static(str(data["content"]))
         if content_type == "question_menu":
-            cards = data.get("cards", [])
-            normalized_cards = self._normalize_question_cards(cards)
-            return QuestionMenu(normalized_cards)
-        builders: dict[str, Callable[[], Widget]] = {
-            "home": HomeView,
-            "deck_selector": DeckSelector,
-            "deck_manager": DeckManager,
-            "deck_creator": DeckCreator,
-            "deck_editor": DeckEditor,
-            "deck_importer": DeckImporter,
-        }
-        builder = builders.get(str(content_type))
-        if builder is not None:
-            return builder()
+            return QuestionMenu(self._normalize_question_cards(data.get("cards", [])))
+        widget = self._static_content_widget(str(content_type))
+        if widget is not None:
+            return widget
         return Static(ui_constants.UNKNOWN_CONTENT_TYPE.format(type_name=str(content_type)))
 
     def _normalize_question_cards(self, cards: object) -> list[CardData]:
@@ -235,13 +216,7 @@ class MainApp(App):
             if not isinstance(tip, str):
                 tip = ""
 
-            normalized_cards.append(
-                {
-                    "question": question,
-                    "answer": answer,
-                    "tip": tip,
-                }
-            )
+            normalized_cards.append({"question": question, "answer": answer, "tip": tip})
 
         return normalized_cards
 
@@ -265,30 +240,12 @@ class MainApp(App):
         key = event.key
         is_ctrl = "ctrl+" in key or bool(getattr(event, "ctrl", False))
 
-        # Ctrl+Left / Ctrl+Right move focus between the two main areas.
-        if self.matches_direction(key, "left") and is_ctrl:
-            self.action_focus_sidebar()
-            event.stop()
+        if is_ctrl and self._handle_ctrl_key(key, event):
             return
-        if self.matches_direction(key, "right") and is_ctrl:
-            self.action_focus_content()
-            event.stop()
+
+        if self.active_block == "sidebar" and self._handle_sidebar_key(key, event):
             return
-        if not is_ctrl and self.active_block == "sidebar":
-            # In the sidebar, arrows only move the selection;
-            # Enter explicitly opens the selected content.
-            if self.matches_direction(key, "up"):
-                self.move_sidebar_selection(step=-1)
-                event.stop()
-                return
-            if self.matches_direction(key, "down"):
-                self.move_sidebar_selection(step=1)
-                event.stop()
-                return
-            if key == "enter":
-                self.sidebar().activate_current()
-                event.stop()
-                return
+
         if self.should_move_with_key(key, "up", is_ctrl):
             self.action_block_previous()
             event.stop()
@@ -296,6 +253,77 @@ class MainApp(App):
         if self.should_move_with_key(key, "down", is_ctrl):
             self.action_block_next()
             event.stop()
+
+    def _navigation_blocked(self, menu_name: str) -> bool:
+        current_content = self.current_content_widget()
+        if not self.controller.should_block_navigation(
+            current_content=current_content,
+            menu_name=menu_name,
+            edit_menu_name=ui_constants.EDIT_DECK,
+        ):
+            return False
+
+        self.controller.warn_unsaved_changes(current_content)
+        self.call_after_refresh(self.action_focus_content)
+        return True
+
+    def _show_deck_manager_view(self, deck_name: str) -> None:
+        if deck_name:
+            self.show_widget(DeckManagerActions(deck_name))
+            return
+        self.show_widget(DeckManager())
+
+    def _static_content_widget(self, content_type: str) -> Widget | None:
+        widget_classes = {
+            "home": HomeView,
+            "deck_selector": DeckSelector,
+            "deck_manager": DeckManager,
+            "deck_creator": DeckCreator,
+            "deck_editor": DeckEditor,
+            "deck_importer": DeckImporter,
+        }
+        widget_class = widget_classes.get(content_type)
+        if widget_class is None:
+            return None
+        return widget_class()
+
+    def _content_height(self, content_widget: Widget) -> str:
+        if isinstance(content_widget, HomeView):
+            return "1fr"
+        return "auto"
+
+    def _schedule_focus(self, focus_content: bool) -> None:
+        if focus_content:
+            self.call_after_refresh(self.action_focus_content)
+            return
+        self.call_after_refresh(self.action_focus_sidebar)
+        self.call_later(self.action_focus_sidebar)
+
+    def _handle_ctrl_key(self, key: str, event: Key) -> bool:
+        if self.matches_direction(key, "left"):
+            self.action_focus_sidebar()
+            event.stop()
+            return True
+        if self.matches_direction(key, "right"):
+            self.action_focus_content()
+            event.stop()
+            return True
+        return False
+
+    def _handle_sidebar_key(self, key: str, event: Key) -> bool:
+        if self.matches_direction(key, "up"):
+            self.move_sidebar_selection(step=-1)
+            event.stop()
+            return True
+        if self.matches_direction(key, "down"):
+            self.move_sidebar_selection(step=1)
+            event.stop()
+            return True
+        if key == "enter":
+            self.sidebar().activate_current()
+            event.stop()
+            return True
+        return False
 
     def content_area(self) -> VerticalScroll:
         return self.query_one("#content_scroll", VerticalScroll)
@@ -312,8 +340,6 @@ class MainApp(App):
         for widget in self.content_area().query("*"):
             if not getattr(widget, "can_focus", False):
                 continue
-            # Scrollable containers are layout helpers and should not be part
-            # of the user-facing focus cycle.
             if isinstance(widget, VerticalScroll):
                 continue
             if getattr(widget, "disabled", False):
@@ -358,8 +384,6 @@ class MainApp(App):
 
     def should_move_with_key(self, key: str, direction: str, is_ctrl: bool) -> bool:
         focused = self.screen.focused
-        # Some widgets (Select, ListView) already use up/down internally.
-        # In that case the app should not intercept those keys.
         if not is_ctrl and self.content_widget_uses_direction_key(focused, direction):
             return False
         return (is_ctrl and self.matches_direction(key, direction)) or (

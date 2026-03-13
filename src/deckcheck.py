@@ -1,6 +1,9 @@
 import json
+import logging
 
 from src.data.constants import CARD_ATTRIBUTES, DECKS_EXTENSION, JSON_ENCODING, OPTIONAL_ATTRIBUTES
+
+LOGGER = logging.getLogger(__name__)
 
 
 def is_valid_deck(deck: list[dict]) -> bool:
@@ -28,16 +31,19 @@ def is_valid_deck(deck: list[dict]) -> bool:
 def is_valid_deck_file(path: str) -> bool:
     """opens file path and checks if deck is valid"""
     if not is_valid_deck_extension(path):
+        LOGGER.warning("Rejected deck file with unsupported extension: %s", path)
         return False
 
     with open(path, "r", encoding=JSON_ENCODING) as f:
         try:
             deck = json.load(f)
             if not isinstance(deck, list):
+                LOGGER.warning("Rejected deck file with non-list content: %s", path)
                 return False
             return is_valid_deck(deck)
 
         except json.JSONDecodeError:
+            LOGGER.exception("Failed to decode deck file: %s", path)
             return False
 
 

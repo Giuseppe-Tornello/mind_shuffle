@@ -53,18 +53,18 @@ class DeckEditor(Widget):
                 yield Button(ui_constants.DECK_EDITOR_PREV_BUTTON, id="deck_editor_prev")
                 yield Input(id="deck_editor_card_number")
                 yield Button(ui_constants.DECK_EDITOR_NEXT_BUTTON, id="deck_editor_next")
-            yield Label(ui_constants.DECK_CREATOR_QUESTION_PLACEHOLDER, classes="field_label")
+            yield Label(ui_constants.FIELD_QUESTION, classes="field_label")
             yield Input(id="deck_editor_question")
-            yield Label(ui_constants.DECK_CREATOR_ANSWER_PLACEHOLDER, classes="field_label")
+            yield Label(ui_constants.FIELD_ANSWER, classes="field_label")
             yield Input(id="deck_editor_answer")
-            yield Label(ui_constants.DECK_CREATOR_TIP_PLACEHOLDER, classes="field_label")
+            yield Label(ui_constants.FIELD_TIP, classes="field_label")
             yield Input(id="deck_editor_tip")
-            yield Label(ui_constants.DECK_CREATOR_TAGS_PLACEHOLDER, classes="field_label")
+            yield Label(ui_constants.FIELD_TAGS, classes="field_label")
             yield Input(id="deck_editor_tags")
             with Horizontal(id="deck_editor_actions"):
                 yield Button(ui_constants.DECK_EDITOR_NEW_BUTTON, id="deck_editor_new")
                 yield Button(ui_constants.DECK_EDITOR_REMOVE_BUTTON, id="deck_editor_remove")
-                yield Button(ui_constants.DECK_EDITOR_BACK_BUTTON, id="deck_editor_back")
+                yield Button(ui_constants.ACTION_BACK, id="deck_editor_back")
                 yield Button(ui_constants.DECK_EDITOR_CANCEL_BUTTON, id="deck_editor_cancel")
                 yield Button(
                     ui_constants.DECK_EDITOR_SAVE_BUTTON,
@@ -96,26 +96,27 @@ class DeckEditor(Widget):
         if event.input.id == "deck_editor_card_number":
             return
         if self._suspend_dirty_tracking:
-            # Avoid marking UI-driven refreshes as user edits
-            # when a deck is reloaded or the selected card changes.
             return
         self.session.is_dirty = not self._inputs_match_session()
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         button_id = event.button.id
-        actions = {
-            "deck_editor_prev": self._go_previous_card,
-            "deck_editor_next": self._go_next_card,
-            "deck_editor_new": self._add_card,
-            "deck_editor_remove": self._remove_card,
-            "deck_editor_back": self._handle_back_request,
-            "deck_editor_cancel": self._cancel_changes,
-            "deck_editor_save": self._save_deck,
-            "deck_editor_delete": self._delete_deck,
-        }
-        action = actions.get(button_id or "")
-        if action is not None:
-            action()
+        if button_id == "deck_editor_prev":
+            self._go_previous_card()
+        elif button_id == "deck_editor_next":
+            self._go_next_card()
+        elif button_id == "deck_editor_new":
+            self._add_card()
+        elif button_id == "deck_editor_remove":
+            self._remove_card()
+        elif button_id == "deck_editor_back":
+            self._handle_back_request()
+        elif button_id == "deck_editor_cancel":
+            self._cancel_changes()
+        elif button_id == "deck_editor_save":
+            self._save_deck()
+        elif button_id == "deck_editor_delete":
+            self._delete_deck()
 
     def has_unsaved_changes(self) -> bool:
         self.session.is_dirty = not self._inputs_match_session()
@@ -186,8 +187,6 @@ class DeckEditor(Widget):
         self._sync_inputs_from_session()
 
     def _store_current_inputs(self) -> None:
-        # Before changing card or deck, push the current field values
-        # into the session objects.
         self.session.save_current_card_fields(
             question=self._input("deck_editor_question").value,
             answer=self._input("deck_editor_answer").value,
@@ -196,8 +195,6 @@ class DeckEditor(Widget):
         )
 
     def _sync_inputs_from_session(self) -> None:
-        # This is the reverse direction of `_store_current_inputs`:
-        # here the session becomes the source of truth for the widgets.
         card = self.session.current_card()
         current, total = self.session.progress()
         self._set_input_value(self._input("deck_editor_question"), card.get("question", ""))
@@ -227,9 +224,6 @@ class DeckEditor(Widget):
         )
 
     def _focus_initial_input(self) -> None:
-        if self.session.deck_name:
-            self._input("deck_editor_question").focus()
-            return
         self._input("deck_editor_question").focus()
 
     def _schedule_dirty_reset(self) -> None:
@@ -239,8 +233,6 @@ class DeckEditor(Widget):
         def clear_dirty() -> None:
             if generation != self._dirty_reset_generation:
                 return
-            # Some Changed events arrive after the frame refresh: delaying the reset
-            # prevents the initial load from being marked as dirty.
             self.session.is_dirty = not self._inputs_match_session()
 
         self.call_after_refresh(clear_dirty)

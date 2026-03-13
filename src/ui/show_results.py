@@ -40,7 +40,7 @@ class ShowResults(Widget):
                 ui_constants.SHOW_RESULTS_ACCURACY.format(accuracy=accuracy),
                 id="show_results_accuracy",
             )
-            yield Button(ui_constants.SHOW_RESULTS_HOME_BUTTON, id="show_results_home")
+            yield Button(ui_constants.ACTION_HOME, id="show_results_home")
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         if event.button.id == "show_results_home":

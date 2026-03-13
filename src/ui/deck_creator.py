@@ -44,10 +44,10 @@ class DeckCreator(Widget):
     def compose(self) -> ComposeResult:
         with VerticalScroll(id="deck_creator"):
             yield Label(ui_constants.DECK_CREATOR_TITLE, id="deck_creator_title")
-            yield Label(ui_constants.DECK_CREATOR_DECK_PLACEHOLDER, classes="field_label")
+            yield Label(ui_constants.FIELD_DECK_NAME, classes="field_label")
             yield Input(id="deck_name_input")
             with Horizontal(id="deck_creator_actions"):
-                yield Button(ui_constants.DECK_CREATOR_BACK_BUTTON, id="deck_creator_back")
+                yield Button(ui_constants.ACTION_BACK, id="deck_creator_back")
                 yield Button(ui_constants.DECK_CREATOR_CREATE_DECK_BUTTON, id="create_deck_button")
             yield Static("", id="deck_creator_status")
 

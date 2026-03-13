@@ -1,4 +1,5 @@
 import json
+import logging
 
 from src.deck_editor_storage import (
     delete_deck,
@@ -7,6 +8,8 @@ from src.deck_editor_storage import (
     load_deck_names,
     save_deck_cards,
 )
+
+LOGGER = logging.getLogger(__name__)
 
 
 class DeckEditorSession:
@@ -40,6 +43,7 @@ class DeckEditorSession:
         try:
             loaded_cards = load_deck_cards(deck_name)
         except (OSError, json.JSONDecodeError):
+            LOGGER.exception("Failed to load deck '%s' into editor session", deck_name)
             return False
         self.original_cards = [card.copy() for card in loaded_cards]
         self.cards = [card.copy() for card in loaded_cards]
@@ -146,8 +150,10 @@ class DeckEditorSession:
         """
         self.save_current_card_fields(question, answer, tip, tags_text)
         if not self.deck_name:
+            LOGGER.warning("Cannot save deck without a selected deck name")
             return "name_error"
         if not self.cards_are_valid():
+            LOGGER.warning("Cannot save deck '%s': one or more cards are invalid", self.deck_name)
             return "card_error"
 
         # Only here does the working copy become definitive and replace the real file.
@@ -160,6 +166,7 @@ class DeckEditorSession:
     def delete_current_deck(self) -> str:
         """Delete the active deck and, when possible, select the next available one."""
         if not self.deck_name:
+            LOGGER.warning("Cannot delete deck: no active deck selected")
             return "delete_error"
 
         deleted_name = self.deck_name

@@ -1,9 +1,11 @@
 import json
+import logging
 from pathlib import Path
 
 from src.data.constants import DECKS_EXTENSION, DECKS_PATH, JSON_ENCODING
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
+LOGGER = logging.getLogger(__name__)
 
 
 def _deck_name_to_path(name: str) -> Path:
@@ -42,7 +44,7 @@ def write_card(card: dict, deck_name: str) -> None:
                 next_id = head.get("id") + 1
 
             except json.JSONDecodeError:
-                # if the deck is not correctly formatted it's overwritten
+                LOGGER.exception("Deck file is corrupted and will be overwritten: %s", path)
                 deck = []
                 next_id = 0
 
@@ -65,6 +67,7 @@ def delete_card(card_id: int, deck_name: str) -> None:
         try:
             deck = json.load(f)
         except json.JSONDecodeError:
+            LOGGER.exception("Cannot delete card from corrupted deck file: %s", path)
             return
 
     for i, card in enumerate(deck, start=0):

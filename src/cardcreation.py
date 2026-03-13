@@ -1,6 +1,7 @@
 import json
 import os
-from .data.constants import JSON_ENCODING, DECKS_PATH, DECKS_EXTENSION
+from .data.constants import JSON_ENCODING, DECKS_PATH, DECKS_EXTENSION, JSON_INDENT, Flashcard
+from .deckcheck import is_valid_deck
 
 
 def _deck_name_to_path(name: str) -> str:
@@ -8,45 +9,33 @@ def _deck_name_to_path(name: str) -> str:
     return DECKS_PATH + name + DECKS_EXTENSION
 
 
-def card_from_strings(question: str, answer: str, tip: str | None, tags: list[str]) -> dict:
+def card_from_strings(question: str, answer: str, tip: str, tags: list[str]) -> Flashcard:
     """creates a flash card from the args"""
 
-    card = {
-        "question": question,
-        "answer": answer,
-        "tip": tip,
-        "tags": tags,
-        "id": None
-    }
+    card: Flashcard = {"question": question, "answer": answer, "tip": tip, "tags": tags, "id": -1}
     return card
 
 
-def write_card(card: dict, deck_name: str) -> None:
+def write_card(card: Flashcard, deck_name: str) -> None:
     """writes the choice card to the specified deck"""
 
     path = _deck_name_to_path(deck_name)
 
-    if not os.path.exists(path):
-        deck = []
-        next_id = 0
+    with open(path, "r", encoding=JSON_ENCODING) as f:
+        try:
+            deck = json.load(f)
+            head = deck[len(deck) - 1]
+            next_id = head.get("id") + 1
 
-    else:
-        with open(path, "r", encoding=JSON_ENCODING) as f:
-            try:
-                deck = json.load(f)
-                head = deck[len(deck) - 1]
-                next_id = head.get("id") + 1
-
-            except json.JSONDecodeError:
-                # if the deck is not correctly formatted it's overwritten
-                deck = []
-                next_id = 0
+        except (FileNotFoundError, OSError, json.JSONDecodeError):
+            deck = []
+            next_id = 0
 
     card.update({'id': next_id})
     deck.append(card)
 
     with open(path, "w", encoding=JSON_ENCODING) as f:
-        json.dump(deck, f, ensure_ascii=False, indent=2)
+        json.dump(deck, f, ensure_ascii=False, indent=JSON_INDENT)
 
 
 def delete_card(card_id: int, deck_name: str) -> None:
@@ -54,14 +43,15 @@ def delete_card(card_id: int, deck_name: str) -> None:
 
     path = _deck_name_to_path(deck_name)
 
-    if not os.path.exists(path):
-        return
-
     with open(path, "r", encoding=JSON_ENCODING) as f:
         try:
             deck = json.load(f)
-        except json.JSONDecodeError:
+
+        except (FileNotFoundError, OSError, json.JSONDecodeError):
             return
+
+    if not is_valid_deck(deck):
+        return
 
     for i, card in enumerate(deck, start=0):
         if card.get('id') == card_id:
@@ -69,7 +59,7 @@ def delete_card(card_id: int, deck_name: str) -> None:
             break
 
     with open(path, "w", encoding=JSON_ENCODING) as f:
-        json.dump(deck, f, ensure_ascii=False, indent=2)
+        json.dump(deck, f, ensure_ascii=False, indent=JSON_INDENT)
 
 
 def import_deck(deck: list[dict], deck_name: str) -> None:
@@ -88,4 +78,4 @@ def import_deck(deck: list[dict], deck_name: str) -> None:
         path = _deck_name_to_path(deck_name + str(i))
 
     with open(path, "w", encoding=JSON_ENCODING) as f:
-        json.dump(deck, f, ensure_ascii=False, indent=2)
+        json.dump(deck, f, ensure_ascii=False, indent=JSON_INDENT)

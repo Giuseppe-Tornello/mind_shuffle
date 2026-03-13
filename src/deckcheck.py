@@ -38,10 +38,7 @@ def is_valid_deck_file(path: str) -> bool:
                 return False
             return is_valid_deck(deck)
 
-    except (FileNotFoundError, OSError):
-        return False
-
-    except JSONDecodeError:
+    except (FileNotFoundError, OSError, JSONDecodeError):
         return False
 
 

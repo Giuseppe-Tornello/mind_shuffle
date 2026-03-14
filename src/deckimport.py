@@ -14,7 +14,7 @@ def get_deck_from_link(url: str) -> list[Flashcard]:
     EMPTY_DECK: list[Flashcard] = []
     if not is_valid_deck_extension(url):
         return EMPTY_DECK
-    
+
     url = _convert_github_url_to_raw(url)
 
     try:

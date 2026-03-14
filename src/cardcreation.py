@@ -1,4 +1,4 @@
-import json
+from json import JSONDecodeError, load, dump
 import os
 from .data.constants import JSON_ENCODING, DECKS_PATH, DECKS_EXTENSION, JSON_INDENT, Flashcard
 from .deckcheck import is_valid_deck
@@ -21,21 +21,21 @@ def write_card(card: Flashcard, deck_name: str) -> None:
 
     path = _deck_name_to_path(deck_name)
 
-    with open(path, "r", encoding=JSON_ENCODING) as f:
-        try:
-            deck = json.load(f)
-            head = deck[len(deck) - 1]
+    try:
+        with open(path, "r", encoding=JSON_ENCODING) as f:
+            deck = load(f)
+            head = deck[len(deck)]
             next_id = head.get("id") + 1
 
-        except (FileNotFoundError, OSError, json.JSONDecodeError):
-            deck = []
-            next_id = 0
+    except (FileNotFoundError, OSError, JSONDecodeError):
+        # if the deck is not correctly formatted it's overwritten
+        deck = []
+        next_id = 1
 
     card.update({'id': next_id})
     deck.append(card)
 
-    with open(path, "w", encoding=JSON_ENCODING) as f:
-        json.dump(deck, f, ensure_ascii=False, indent=JSON_INDENT)
+    write_json(deck, path)
 
 
 def delete_card(card_id: int, deck_name: str) -> None:
@@ -45,9 +45,9 @@ def delete_card(card_id: int, deck_name: str) -> None:
 
     with open(path, "r", encoding=JSON_ENCODING) as f:
         try:
-            deck = json.load(f)
+            deck = load(f)
 
-        except (FileNotFoundError, OSError, json.JSONDecodeError):
+        except (FileNotFoundError, OSError, JSONDecodeError):
             return
 
     if not is_valid_deck(deck):
@@ -58,16 +58,17 @@ def delete_card(card_id: int, deck_name: str) -> None:
             deck.pop(i)
             break
 
-    with open(path, "w", encoding=JSON_ENCODING) as f:
-        json.dump(deck, f, ensure_ascii=False, indent=JSON_INDENT)
+    write_json(deck, path)
 
 
-def import_deck(deck: list[dict], deck_name: str) -> None:
+def import_deck(deck: list[Flashcard], deck_name: str) -> None:
     """
     imports a whole deck locally. its intended use its related to
     remotely downloaded json files. it does not overwrite already existing decks
     with the same name.
     """
+    if not is_valid_deck(deck):
+        return
 
     path = _deck_name_to_path(deck_name)
     i = 0
@@ -76,6 +77,9 @@ def import_deck(deck: list[dict], deck_name: str) -> None:
         # needed to avoid overwriting other already locally existing decks
         i += 1
         path = _deck_name_to_path(deck_name + str(i))
+    write_json(deck, path)
 
+
+def write_json(deck: list[Flashcard], path: str) -> None:
     with open(path, "w", encoding=JSON_ENCODING) as f:
-        json.dump(deck, f, ensure_ascii=False, indent=JSON_INDENT)
+        dump(deck, f, ensure_ascii=False, indent=JSON_INDENT)

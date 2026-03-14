@@ -1,4 +1,5 @@
 import requests
+from .data.constants import Flashcard
 from .deckcheck import is_valid_deck, is_valid_deck_extension
 
 
@@ -9,22 +10,18 @@ def _convert_github_url_to_raw(url: str) -> str:
     return url
 
 
-def get_deck_from_link(url: str) -> list:
-
-    url = _convert_github_url_to_raw(url)
-    EMPTY_DECK: list[dict] = []
+def get_deck_from_link(url: str) -> list[Flashcard]:
+    EMPTY_DECK: list[Flashcard] = []
     if not is_valid_deck_extension(url):
         return EMPTY_DECK
-
-    response = requests.get(url, timeout=20)
-    if response.status_code != 200:
-        return EMPTY_DECK
+    
+    url = _convert_github_url_to_raw(url)
 
     try:
+        response = requests.get(url, timeout=10)
         deck = response.json()
-        if is_valid_deck(deck):
-            return deck
-        return EMPTY_DECK
-
-    except requests.exceptions.JSONDecodeError:
+        if not is_valid_deck(deck):
+            return EMPTY_DECK
+        return deck
+    except requests.RequestException:
         return EMPTY_DECK

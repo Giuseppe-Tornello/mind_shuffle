@@ -1,4 +1,5 @@
 from src.deckcheck import is_valid_deck_extension, is_valid_deck_file, is_valid_deck, Flashcard
+from tests.test_constants import TEST_DECKS_PATH, VALID_DECK
 
 
 def test_is_valid_deck_extension() -> None:
@@ -12,7 +13,6 @@ def test_is_valid_deck_extension() -> None:
 
 
 def test_is_valid_deck_file() -> None:
-    TEST_DECKS_PATH = "tests/test_decks/"
     valid_deck = "valid_deck1.json"
     invalid_deck_names = [
         "invalid_deck1.json",  # has two id as '1'
@@ -34,12 +34,8 @@ def test_is_valid_deck_file() -> None:
 
 def test_is_valid_deck() -> None:
 
-    deck: list[Flashcard] = [
-        {"id": 1, "question": "Question 1", "answer": "Answer 1", "tags": ["tag1"], "tip": "tip"},
-        {"id": 2, "question": "Question 2", "answer": "Answer 2", "tags": ["tag2"], "tip": ""}  # tip is empty
-    ]
-    assert isinstance(is_valid_deck(deck), bool)
-    assert is_valid_deck(deck) is True
+    assert isinstance(is_valid_deck(VALID_DECK), bool)
+    assert is_valid_deck(VALID_DECK) is True
 
     invalid_deck0: list[Flashcard] = []
     invalid_deck1: list[Flashcard] = [

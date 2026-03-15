@@ -1,5 +1,6 @@
 from src.deckimport import _convert_github_url_to_raw, get_deck_from_link
 from src.data.constants import Flashcard
+from tests.test_constants import VALID_DECK
 
 # flake8: noqa: E501
 
@@ -8,22 +9,17 @@ def test_convert_github_url_to_raw() -> None:
     parsed = "https://raw.githubusercontent.com/Giuseppe-Tornello/mind_shuffle/refs/heads/P_tests/tests/test_decks/valid_deck1.json"
     print(_convert_github_url_to_raw(to_parse))
     print(parsed)
+    assert isinstance(_convert_github_url_to_raw(to_parse),str) is True
     assert _convert_github_url_to_raw(to_parse) == parsed
     assert _convert_github_url_to_raw("") == ""
 
 
 def test_get_deck_from_link() -> None:
     valid_raw_url = "https://raw.githubusercontent.com/Giuseppe-Tornello/mind_shuffle/refs/heads/P_tests/tests/test_decks/valid_deck1.json"
-    valid_deck: list[Flashcard] = [
-        {"question": "What is a Python list?", "answer": "An ordered and mutable collection of elements.", "tip": "Lists use square brackets.", "tags": ["python", "basics"], "id": 1},
-        {"question": "How do you create a dictionary in Python?", "answer": "Using curly braces with key value pairs, for example {'a': 1}.", "tip": "The constructor dict() is another option.", "tags": ["python", "dict"], "id": 2},
-        {"question": "What does len('flashcard') return?", "answer": "9", "tip": None, "tags": ["python", "strings"], "id": 3},  # type: ignore[typeddict-item]
-        {"question": "What is the output type of range(5)?", "answer": "A range object.", "tip": "Convert it with list(range(5)) if needed.", "tags": ["python", "iteration"], "id": 4}
-    ]
-    assert get_deck_from_link(valid_raw_url) == valid_deck
+    assert get_deck_from_link(valid_raw_url) == VALID_DECK
 
     valid_url = "https://github.com/Giuseppe-Tornello/mind_shuffle/blob/P_tests/tests/test_decks/valid_deck1.json"
-    assert get_deck_from_link(valid_url) == valid_deck
+    assert get_deck_from_link(valid_url) == VALID_DECK
 
     invalid_url_list: list[str] = [
         "https://this.url.does.not.exist/deck.json",
@@ -33,4 +29,5 @@ def test_get_deck_from_link() -> None:
     ]
 
     for invalid_url in invalid_url_list:
+        assert isinstance(get_deck_from_link(invalid_url),list)
         assert get_deck_from_link(invalid_url) == []

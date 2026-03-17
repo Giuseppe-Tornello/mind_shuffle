@@ -1,5 +1,5 @@
 from src.deckimport import _convert_github_url_to_raw, get_deck_from_link
-from src.data.constants import Flashcard
+
 from tests.test_constants import VALID_DECK
 
 # flake8: noqa: E501
@@ -29,5 +29,5 @@ def test_get_deck_from_link() -> None:
     ]
 
     for invalid_url in invalid_url_list:
-        assert isinstance(get_deck_from_link(invalid_url),list)
+        assert isinstance(get_deck_from_link(invalid_url), list)
         assert get_deck_from_link(invalid_url) == []

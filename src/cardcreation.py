@@ -31,7 +31,7 @@ def write_card(card: Flashcard, deck_name: str) -> None:
         deck = []
         next_id = 1
     else:
-        head = deck[len(deck)]
+        head = deck[len(deck) - 1]
         next_id = head.get("id") + 1
 
     card.update({'id': next_id})

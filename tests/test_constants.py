@@ -1,4 +1,5 @@
 from src.data.constants import Flashcard
+# flake8: noqa: E501
 
 
 TEST_DECKS_PATH = "tests/test_decks/"

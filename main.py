@@ -9,6 +9,8 @@ from textual.events import Key
 from textual.widget import Widget
 from textual.widgets import ListView, Select, Static
 
+from src.data.constants import Flashcard
+
 from src.ui import ui_constants
 from src.ui.deck_creator import DeckCreator
 from src.ui.deck_editor import DeckEditor
@@ -16,7 +18,6 @@ from src.ui.deck_manager import DeckManager
 from src.ui.deck_manager_actions import DeckManagerActions
 from src.ui.home_view import HomeView
 from src.ui.deck_importer import DeckImporter
-from src.ui.deck_selector import CardData
 from src.ui.deck_selector import DeckSelector
 from src.ui.question_menu import QuestionMenu
 from src.ui.show_results import ShowResults
@@ -199,11 +200,11 @@ class MainApp(App):
             return widget
         return Static(ui_constants.UNKNOWN_CONTENT_TYPE.format(type_name=str(content_type)))
 
-    def _normalize_question_cards(self, cards: object) -> list[CardData]:
+    def _normalize_question_cards(self, cards: object) -> list[Flashcard]:
         if not isinstance(cards, list):
             return []
 
-        normalized_cards: list[CardData] = []
+        normalized_cards: list[Flashcard] = []
         for raw_card in cards:
             if not isinstance(raw_card, dict):
                 continue
@@ -216,7 +217,13 @@ class MainApp(App):
             if not isinstance(tip, str):
                 tip = ""
 
-            normalized_cards.append({"question": question, "answer": answer, "tip": tip})
+            normalized_cards.append({
+                "question": question,
+                "answer": answer,
+                "tip": tip,
+                "tags": [],
+                "id": 0
+            })
 
         return normalized_cards
 

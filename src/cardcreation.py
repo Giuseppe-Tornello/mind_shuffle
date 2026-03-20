@@ -1,99 +1,91 @@
-import json
+from json import JSONDecodeError, load, dump
+import os
+from src.data.constants import JSON_ENCODING, DECKS_PATH, DECKS_EXTENSION, JSON_INDENT, Flashcard
+from src.deckcheck import is_valid_deck
 import logging
-from pathlib import Path
-
-from src.data.constants import DECKS_EXTENSION, DECKS_PATH, JSON_ENCODING
-
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
 LOGGER = logging.getLogger(__name__)
 
 
-def _deck_name_to_path(name: str) -> Path:
-    """formats the deck name into a full project-root-relative path"""
-    return PROJECT_ROOT / DECKS_PATH / f"{name}{DECKS_EXTENSION}"
+def _deck_name_to_path(name: str) -> str:
+    """formats the deck name into a full relative path"""
+    return DECKS_PATH + name + DECKS_EXTENSION
 
 
-def card_from_strings(question: str, answer: str, tip: str | None, tags: list[str]) -> dict:
+def card_from_strings(question: str, answer: str, tip: str, tags: list[str]) -> Flashcard:
     """creates a flash card from the args"""
-
-    card = {
-        "question": question,
-        "answer": answer,
-        "tip": tip,
-        "tags": tags,
-        "id": None
-    }
+    card = Flashcard(
+        question=question,
+        answer=answer,
+        tip=tip,
+        tags=tags,
+        id=-1)
     return card
 
 
-def write_card(card: dict, deck_name: str) -> None:
+def write_card(card: Flashcard, deck_name: str) -> None:
     """writes the choice card to the specified deck"""
 
     path = _deck_name_to_path(deck_name)
-    path.parent.mkdir(parents=True, exist_ok=True)
+    deck = read_json(path)
+    next_id = -1
 
-    if not path.exists():
+    if not is_valid_deck(deck):
         deck = []
-        next_id = 0
-
+        next_id = 1
     else:
-        with path.open("r", encoding=JSON_ENCODING) as f:
-            try:
-                deck = json.load(f)
-                head = deck[len(deck) - 1]
-                next_id = head.get("id") + 1
-
-            except json.JSONDecodeError:
-                LOGGER.exception("Deck file is corrupted and will be overwritten: %s", path)
-                deck = []
-                next_id = 0
+        head = deck[len(deck) - 1]
+        next_id = head.get("id") + 1
 
     card.update({'id': next_id})
     deck.append(card)
-
-    with path.open("w", encoding=JSON_ENCODING) as f:
-        json.dump(deck, f, ensure_ascii=False, indent=2)
+    write_json(deck, path)
 
 
 def delete_card(card_id: int, deck_name: str) -> None:
     """deletes the specified card from a deck"""
-
     path = _deck_name_to_path(deck_name)
-
-    if not path.exists():
+    deck = read_json(path)
+    if not is_valid_deck(deck):
+        LOGGER.exception("Cannot delete card from deck named '%s'", deck_name)
         return
-
-    with path.open("r", encoding=JSON_ENCODING) as f:
-        try:
-            deck = json.load(f)
-        except json.JSONDecodeError:
-            LOGGER.exception("Cannot delete card from corrupted deck file: %s", path)
-            return
 
     for i, card in enumerate(deck, start=0):
         if card.get('id') == card_id:
             deck.pop(i)
             break
 
-    with path.open("w", encoding=JSON_ENCODING) as f:
-        json.dump(deck, f, ensure_ascii=False, indent=2)
+    write_json(deck, path)
 
 
-def import_deck(deck: list[dict], deck_name: str) -> None:
+def import_deck(deck: list[Flashcard], deck_name: str) -> None:
     """
     imports a whole deck locally. its intended use its related to
     remotely downloaded json files. it does not overwrite already existing decks
     with the same name.
     """
+    if not is_valid_deck(deck):
+        return
 
     path = _deck_name_to_path(deck_name)
-    path.parent.mkdir(parents=True, exist_ok=True)
     i = 0
 
-    while path.exists():
+    while os.path.exists(path):
         # needed to avoid overwriting other already locally existing decks
         i += 1
         path = _deck_name_to_path(deck_name + str(i))
+    write_json(deck, path)
 
-    with path.open("w", encoding=JSON_ENCODING) as f:
-        json.dump(deck, f, ensure_ascii=False, indent=2)
+
+def write_json(deck: list[Flashcard], path: str) -> None:
+    with open(path, "w", encoding=JSON_ENCODING) as f:
+        dump(deck, f, ensure_ascii=False, indent=JSON_INDENT)
+
+
+def read_json(path: str) -> list[Flashcard]:
+    try:
+        with open(path, "r", encoding=JSON_ENCODING) as f:
+            deck = load(f)
+            return deck
+    except (FileNotFoundError, OSError, JSONDecodeError):
+        LOGGER.exception("Unable to read file in path \"%s\"", path)
+        return []

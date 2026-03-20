@@ -1,15 +1,17 @@
-from src.ui.card_types import CardData
+from src.data.constants import Flashcard
 
 
 class QuestionSession:
     """State and logic for the training session."""
 
-    def __init__(self, cards: list[CardData] | None = None) -> None:
-        self.cards: list[CardData] = [
+    def __init__(self, cards: list[Flashcard] | None = None) -> None:
+        self.cards: list[Flashcard] = [
             {
                 "question": card["question"],
                 "answer": card["answer"],
                 "tip": card["tip"],
+                "tags": card["tags"],
+                "id": card["id"],
             }
             for card in cards
         ] if cards else []
@@ -31,7 +33,7 @@ class QuestionSession:
     def has_cards(self) -> bool:
         return bool(self.cards)
 
-    def current_card(self) -> CardData:
+    def current_card(self) -> Flashcard:
         return self.cards[self.current_index]
 
     def current_answer_text(self) -> str:

@@ -10,14 +10,14 @@ from textual.widgets import Label, ListItem, ListView, Static
 
 from src.deckcheck import is_valid_deck_file
 from src.ui import ui_constants
-from src.ui.card_types import CardData
+from src.data.constants import Flashcard
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 
 class DeckData(TypedDict):
     name: str
-    cards: list[CardData]
+    cards: list[Flashcard]
 
 
 class DeckSelector(Widget):
@@ -26,7 +26,7 @@ class DeckSelector(Widget):
     class DeckChosen(Message):
         """Event emitted when the user chooses a deck."""
 
-        def __init__(self, deck_name: str, cards: list[CardData]) -> None:
+        def __init__(self, deck_name: str, cards: list[Flashcard]) -> None:
             super().__init__()
             self.deck_name = deck_name
             self.cards = cards
@@ -85,7 +85,7 @@ class DeckSelector(Widget):
             if not isinstance(raw_cards, list):
                 continue
 
-            cards: list[CardData] = []
+            cards: list[Flashcard] = []
             for raw_card in raw_cards:
                 if not isinstance(raw_card, dict):
                     continue
@@ -102,6 +102,8 @@ class DeckSelector(Widget):
                         "question": question,
                         "answer": answer,
                         "tip": tip,
+                        "tags": [],
+                        "id": 0,
                     }
                 )
 

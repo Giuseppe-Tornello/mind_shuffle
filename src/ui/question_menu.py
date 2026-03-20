@@ -5,8 +5,9 @@ from textual.message import Message
 from textual.widget import Widget
 from textual.widgets import Button, Input, Label, Static
 
+from src.data.constants import Flashcard
+
 from src.ui import ui_constants
-from src.ui.card_types import CardData
 from src.ui.question_session import QuestionSession
 
 
@@ -24,7 +25,7 @@ class QuestionMenu(Widget):
             self.correct_answers = correct_answers
             self.wrong_answers = wrong_answers
 
-    def __init__(self, cards: list[CardData] | None = None) -> None:
+    def __init__(self, cards: list[Flashcard] | None = None) -> None:
         super().__init__()
         self.session = QuestionSession(cards)
 

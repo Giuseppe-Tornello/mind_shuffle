@@ -80,10 +80,12 @@ class DeckEditor(Widget):
             yield Static("", id="deck_editor_status")
 
     def on_mount(self) -> None:
-        if not self.create_mode and self.session.has_decks():
+        if not self.create_mode:
             deck_name = self.session.selected_or_first_deck()
-            if not self.session.load_selected_deck(deck_name):
+            if deck_name and not self.session.load_selected_deck(deck_name):
                 self._status().update(ui_constants.DECK_EDITOR_LOAD_ERROR)
+            elif deck_name:
+                self._sync_inputs_from_session()
             else:
                 self._sync_inputs_from_session()
         else:

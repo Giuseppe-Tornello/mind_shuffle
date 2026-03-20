@@ -4,15 +4,15 @@ from textual.message import Message
 from textual.widget import Widget
 from textual.widgets import Button, Input, Label, Static
 
-from src.deck_creator_service import DeckCreatorService
+from src.deck_editor_storage import create_deck
 from src.ui import ui_constants
 
 
 class DeckCreator(Widget):
     """Minimal screen used to create an empty deck.
 
-    The widget does not decide how deck creation works: it delegates to the service
-    and only collects input and renders status feedback.
+    The widget only collects input, delegates deck persistence to storage,
+    and renders status feedback.
     """
 
     class DeckCreated(Message):
@@ -36,7 +36,6 @@ class DeckCreator(Widget):
         back_deck_name: str = "",
     ) -> None:
         super().__init__()
-        self.service = DeckCreatorService()
         self.initial_deck_name = initial_deck_name
         self.initial_cards = initial_cards or []
         self.back_deck_name = back_deck_name
@@ -70,7 +69,7 @@ class DeckCreator(Widget):
         self._create_empty_deck()
 
     def _create_empty_deck(self) -> None:
-        deck_name = self.service.create_deck(
+        deck_name = create_deck(
             deck_name=self._input().value,
             cards=self.initial_cards,
         )

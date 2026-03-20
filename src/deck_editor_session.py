@@ -2,11 +2,14 @@ import json
 import logging
 
 from src.deck_editor_storage import (
+    DeckFileError,
+    deck_exists,
     delete_deck,
+    deck_file_path,
     empty_card,
     load_deck_cards,
     load_deck_names,
-    save_deck_cards,
+    write_deck_file,
 )
 
 LOGGER = logging.getLogger(__name__)
@@ -34,6 +37,8 @@ class DeckEditorSession:
         """Prefer the caller-selected deck, otherwise use the first available one."""
         if self.initial_deck_name in self.decks:
             return self.initial_deck_name
+        if self.initial_deck_name and deck_exists(self.initial_deck_name):
+            return self.initial_deck_name
         if self.decks:
             return self.decks[0]
         return ""
@@ -42,7 +47,7 @@ class DeckEditorSession:
         """Load the persisted deck and prepare an editable in-memory working copy."""
         try:
             loaded_cards = load_deck_cards(deck_name)
-        except (OSError, json.JSONDecodeError):
+        except (DeckFileError, OSError, json.JSONDecodeError):
             LOGGER.exception("Failed to load deck '%s' into editor session", deck_name)
             return False
         self.original_cards = [card.copy() for card in loaded_cards]
@@ -157,7 +162,7 @@ class DeckEditorSession:
             return "card_error"
 
         # Only here does the working copy become definitive and replace the real file.
-        save_deck_cards(self.deck_name, self.cards)
+        write_deck_file(self.cards, deck_file_path(self.deck_name))
         self.decks = load_deck_names()
         self.original_cards = [card.copy() for card in self.cards]
         self.is_dirty = False

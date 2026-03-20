@@ -1,5 +1,3 @@
-import json
-from pathlib import Path
 from typing import TypedDict
 
 from textual.app import ComposeResult
@@ -8,11 +6,9 @@ from textual.message import Message
 from textual.widget import Widget
 from textual.widgets import Label, ListItem, ListView, Static
 
-from src.deckcheck import is_valid_deck_file
+from src.deck_editor_storage import deck_file_path, load_deck_names, read_deck_file
 from src.ui import ui_constants
 from src.data.constants import Flashcard
-
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 
 class DeckData(TypedDict):
@@ -70,20 +66,10 @@ class DeckSelector(Widget):
         self._emit_deck_choice(event.item)
 
     def _load_decks(self) -> list[DeckData]:
-        deck_dir = PROJECT_ROOT / "storage" / "decks"
         decks: list[DeckData] = []
 
-        for deck_path in sorted(deck_dir.glob("*.json")):
-            if not is_valid_deck_file(str(deck_path)):
-                continue
-            try:
-                with deck_path.open("r", encoding="utf-8") as deck_file:
-                    raw_cards = json.load(deck_file)
-            except (OSError, json.JSONDecodeError):
-                continue
-
-            if not isinstance(raw_cards, list):
-                continue
+        for deck_name in load_deck_names():
+            raw_cards = read_deck_file(deck_file_path(deck_name))
 
             cards: list[Flashcard] = []
             for raw_card in raw_cards:
@@ -108,7 +94,7 @@ class DeckSelector(Widget):
                 )
 
             if cards:
-                decks.append({"name": deck_path.stem, "cards": cards})
+                decks.append({"name": deck_name, "cards": cards})
 
         return decks
 

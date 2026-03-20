@@ -1,4 +1,10 @@
-from src.deck_editor_storage import delete_deck, load_deck_names, load_raw_deck_cards, rename_deck
+from src.deck_editor_storage import (
+    deck_file_path,
+    delete_deck,
+    load_deck_names,
+    read_deck_file,
+    rename_deck,
+)
 
 
 class DeckManagerSession:
@@ -22,7 +28,7 @@ class DeckManagerSession:
         deck_name = self.current_deck_name()
         if not deck_name:
             return []
-        return load_raw_deck_cards(deck_name)
+        return read_deck_file(deck_file_path(deck_name))
 
     def current_deck_card_count(self) -> int:
         return len(self.current_deck_cards())

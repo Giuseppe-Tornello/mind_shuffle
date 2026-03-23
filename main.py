@@ -1,6 +1,7 @@
 """Main application entry point."""
 # pylint: disable=too-many-public-methods
 
+from collections.abc import Mapping
 from pathlib import Path
 
 from textual.app import App, ComposeResult
@@ -9,7 +10,7 @@ from textual.events import Key
 from textual.widget import Widget
 from textual.widgets import ListView, Select, Static
 
-from src.data.constants import Flashcard
+from src.data.flashcard_utils import normalize_question_cards
 
 from src.ui import ui_constants
 from src.ui.deck_creator import DeckCreator
@@ -38,35 +39,7 @@ def unknown_content_widget(content_type: str) -> Static:
     return Static(ui_constants.UNKNOWN_CONTENT_TYPE.format(type_name=content_type))
 
 
-def normalize_question_cards(cards: object) -> list[Flashcard]:
-    if not isinstance(cards, list):
-        return []
-
-    normalized_cards: list[Flashcard] = []
-    for raw_card in cards:
-        if not isinstance(raw_card, dict):
-            continue
-
-        question = raw_card.get("question")
-        answer = raw_card.get("answer")
-        tip = raw_card.get("tip", "")
-        if not isinstance(question, str) or not isinstance(answer, str):
-            continue
-        if not isinstance(tip, str):
-            tip = ""
-
-        normalized_cards.append({
-            "question": question,
-            "answer": answer,
-            "tip": tip,
-            "tags": [],
-            "id": 0,
-        })
-
-    return normalized_cards
-
-
-def menu_widget(data: dict[str, object]) -> Widget:
+def menu_widget(data: Mapping[str, object]) -> Widget:
     content_type = str(data["type"])
     if content_type == "text":
         return Static(str(data["content"]))

@@ -6,6 +6,7 @@ from textual.message import Message
 from textual.widget import Widget
 from textual.widgets import Label, ListItem, ListView, Static
 
+from src.data.flashcard_utils import normalize_question_cards
 from src.deck_editor_storage import deck_file_path, load_deck_names, read_deck_file
 from src.ui import ui_constants
 from src.data.constants import Flashcard
@@ -70,28 +71,7 @@ class DeckSelector(Widget):
 
         for deck_name in load_deck_names():
             raw_cards = read_deck_file(deck_file_path(deck_name))
-
-            cards: list[Flashcard] = []
-            for raw_card in raw_cards:
-                if not isinstance(raw_card, dict):
-                    continue
-
-                question = str(raw_card.get("question", "")).strip()
-                answer = str(raw_card.get("answer", "")).strip()
-                tip = str(raw_card.get("tip") or "").strip()
-
-                if not question or not answer:
-                    continue
-
-                cards.append(
-                    {
-                        "question": question,
-                        "answer": answer,
-                        "tip": tip,
-                        "tags": [],
-                        "id": 0,
-                    }
-                )
+            cards = normalize_question_cards(raw_cards)
 
             if cards:
                 decks.append({"name": deck_name, "cards": cards})

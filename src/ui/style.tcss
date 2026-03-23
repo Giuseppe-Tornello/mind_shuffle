@@ -245,6 +245,7 @@ $menu-title-padding-x: 1;
 }
 
 #deck_manager_actions,
+#deck_manager_empty_actions,
 #deck_manager_actions_row,
 #deck_editor_select_row {
     height: auto;
@@ -353,6 +354,7 @@ $menu-title-padding-x: 1;
 #deck_editor_prev_deck,
 #deck_editor_next_deck,
 #deck_manager_create,
+#deck_manager_import,
 #deck_manager_open,
 #deck_manager_back,
 #deck_manager_duplicate,
@@ -401,6 +403,7 @@ $menu-title-padding-x: 1;
 }
 
 #deck_manager_create,
+#deck_manager_import,
 #deck_manager_open,
 #deck_manager_duplicate,
 #deck_manager_edit {

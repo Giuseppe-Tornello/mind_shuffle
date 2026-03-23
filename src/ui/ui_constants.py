@@ -3,7 +3,7 @@
 HOME = "Home"
 REVISE = "Ripassa"
 CREATE_DECK = "Crea mazzo"
-EDIT_DECK = "Modifica mazzo"
+EDIT_DECK = "Gestione mazzi"
 IMPORT_DECK = "Importa mazzo"
 EXIT = "Esci"
 
@@ -15,7 +15,7 @@ FIELD_TAGS = "Tag separati da virgola"
 ACTION_BACK = "Indietro"
 ACTION_HOME = "Torna alla home"
 
-MENU_TITLE = "Menu"
+MENU_TITLE = "Mazzi"
 SELECT_MENU_ITEM = "Seleziona una voce"
 UNKNOWN_CONTENT_TYPE = "Tipo sconosciuto: {type_name}"
 DECK_SELECTOR_TITLE = "Seleziona un mazzo"
@@ -37,6 +37,7 @@ DECK_MANAGER_RENAME_BUTTON = "Rinomina"
 DECK_MANAGER_RENAME_ERROR = "Inserisci un nuovo nome mazzo non gia' usato."
 DECK_MANAGER_RENAME_SUCCESS = "Mazzo rinominato: {deck_name}"
 DECK_MANAGER_CREATE_BUTTON = "Nuovo mazzo"
+DECK_MANAGER_IMPORT_BUTTON = "Importa mazzo"
 DECK_MANAGER_OPEN_BUTTON = "Apri"
 
 DECK_MANAGER_ACTIONS_TITLE = "Azioni sul mazzo"
@@ -115,9 +116,6 @@ MENU_PAGES = {
     },
     EDIT_DECK: {
         "type": "deck_manager"
-    },
-    IMPORT_DECK: {
-        "type": "deck_importer"
     },
     EXIT: {
         "type": "exit"

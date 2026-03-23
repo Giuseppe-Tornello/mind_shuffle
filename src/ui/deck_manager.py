@@ -21,6 +21,9 @@ class DeckManager(Widget):
             super().__init__()
             self.deck_name = deck_name
 
+    class ImportDeckRequested(Message):
+        """Request the deck import screen from the deck management area."""
+
     def __init__(self, initial_deck_name: str = "") -> None:
         super().__init__()
         self.session = DeckManagerSession(initial_deck_name=initial_deck_name)
@@ -31,7 +34,9 @@ class DeckManager(Widget):
 
             if not self.session.has_decks():
                 yield Static(ui_constants.DECK_MANAGER_EMPTY, id="deck_manager_empty")
-                yield Button(ui_constants.DECK_MANAGER_CREATE_BUTTON, id="deck_manager_create")
+                with Horizontal(id="deck_manager_empty_actions"):
+                    yield Button(ui_constants.DECK_MANAGER_CREATE_BUTTON, id="deck_manager_create")
+                    yield Button(ui_constants.DECK_MANAGER_IMPORT_BUTTON, id="deck_manager_import")
                 yield Static("", id="deck_manager_status")
                 return
 
@@ -50,6 +55,7 @@ class DeckManager(Widget):
                 yield Button(ui_constants.DECK_MANAGER_RENAME_BUTTON, id="deck_manager_rename")
             with Horizontal(id="deck_manager_actions"):
                 yield Button(ui_constants.DECK_MANAGER_CREATE_BUTTON, id="deck_manager_create")
+                yield Button(ui_constants.DECK_MANAGER_IMPORT_BUTTON, id="deck_manager_import")
                 yield Button(ui_constants.DECK_MANAGER_OPEN_BUTTON, id="deck_manager_open")
             yield Static("", id="deck_manager_status")
 
@@ -60,6 +66,9 @@ class DeckManager(Widget):
         button_id = event.button.id
         if button_id == "deck_manager_create":
             self.post_message(self.CreateDeckRequested())
+            return
+        if button_id == "deck_manager_import":
+            self.post_message(self.ImportDeckRequested())
             return
         if button_id == "deck_manager_open":
             deck_name = self.session.current_deck_name()

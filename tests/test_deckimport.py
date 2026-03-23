@@ -21,10 +21,10 @@ class _ResponseStub:
 def test_convert_github_url_to_raw() -> None:
     service = DeckImporterService()
     to_parse = "https://github.com/Giuseppe-Tornello/mind_shuffle/blob/P_tests/tests/test_decks/valid_deck1.json"
-    parsed = "https://raw.githubusercontent.com/Giuseppe-Tornello/mind_shuffle/refs/heads/P_tests/tests/test_decks/valid_deck1.json"
+    parsed = "https://raw.githubusercontent.com/Giuseppe-Tornello/mind_shuffle/refs/heads/P_tests/tests/test_decks/valid_deck1.json"  # noqa: E501
 
-    assert service._convert_github_url_to_raw(to_parse) == parsed
-    assert service._convert_github_url_to_raw("") == ""
+    assert service._convert_github_url_to_raw(to_parse) == parsed  # pylint: disable=protected-access
+    assert service._convert_github_url_to_raw("") == ""  # pylint: disable=protected-access
 
 
 def test_get_deck_from_link_returns_valid_deck(monkeypatch: MonkeyPatch) -> None:

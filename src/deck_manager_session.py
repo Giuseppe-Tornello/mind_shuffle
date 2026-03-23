@@ -5,6 +5,7 @@ from src.deck_editor_storage import (
     read_deck_file,
     rename_deck,
 )
+from src.data.constants import Flashcard
 
 
 class DeckManagerSession:
@@ -24,7 +25,7 @@ class DeckManagerSession:
             return ""
         return self.decks[self.current_index]
 
-    def current_deck_cards(self) -> list[dict]:
+    def current_deck_cards(self) -> list[Flashcard]:
         deck_name = self.current_deck_name()
         if not deck_name:
             return []

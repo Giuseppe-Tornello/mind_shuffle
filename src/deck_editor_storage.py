@@ -2,6 +2,7 @@ import json
 import logging
 from json import JSONDecodeError
 from pathlib import Path
+from typing import cast
 
 from src.data.constants import Flashcard, JSON_ENCODING, JSON_INDENT
 from src.deckcheck import is_valid_deck, is_valid_deck_file
@@ -56,10 +57,10 @@ def load_deck_names() -> list[str]:
     return deck_names
 
 
-def load_deck_cards(deck_name: str) -> list[dict]:
+def load_deck_cards(deck_name: str) -> list[Flashcard]:
     """Load a deck from disk and normalize each card for the editor."""
     raw_cards = read_deck_file(deck_file_path(deck_name), strict=True)
-    cards: list[dict] = []
+    cards: list[Flashcard] = []
     for index, raw_card in enumerate(raw_cards, start=1):
         cards.append(normalize_card(raw_card, index))
     if not cards:
@@ -67,7 +68,7 @@ def load_deck_cards(deck_name: str) -> list[dict]:
     return cards
 
 
-def create_deck(deck_name: str, cards: list[dict] | None = None) -> str:
+def create_deck(deck_name: str, cards: list[Flashcard] | None = None) -> str:
     """Create a deck file using a non-conflicting normalized name."""
     resolved_name = resolve_available_deck_name(deck_name)
     if not resolved_name:
@@ -86,7 +87,7 @@ def import_deck(deck: list[Flashcard], deck_name: str) -> str:
     return resolved_name
 
 
-def add_card_to_deck(card: dict, deck_name: str) -> None:
+def add_card_to_deck(card: Flashcard, deck_name: str) -> None:
     """Append a card to the specified deck, assigning the next sequential id."""
     normalized_name = normalize_deck_name(deck_name)
     if not normalized_name:
@@ -99,7 +100,7 @@ def add_card_to_deck(card: dict, deck_name: str) -> None:
     else:
         deck = []
 
-    card_to_save = dict(card)
+    card_to_save = cast(Flashcard, dict(card))
     card_to_save["id"] = next_id
     deck.append(card_to_save)
     write_deck_file(deck, deck_file_path(normalized_name))
@@ -154,7 +155,7 @@ def deck_file_path(deck_name: str) -> Path:
     return deck_directory() / f"{normalized_name}.json"
 
 
-def read_deck_file(path: str | Path, strict: bool = False) -> list[dict]:
+def read_deck_file(path: str | Path, strict: bool = False) -> list[Flashcard]:
     """Read deck JSON from disk, optionally failing loudly on malformed files."""
     deck_path = Path(path)
     try:
@@ -172,7 +173,7 @@ def read_deck_file(path: str | Path, strict: bool = False) -> list[dict]:
         return []
 
 
-def write_deck_file(deck: list[dict], path: str | Path) -> None:
+def write_deck_file(deck: list[Flashcard], path: str | Path) -> None:
     """Write deck JSON to disk using the project encoding and indentation."""
     deck_path = Path(path)
     deck_path.parent.mkdir(parents=True, exist_ok=True)
@@ -180,23 +181,23 @@ def write_deck_file(deck: list[dict], path: str | Path) -> None:
         json.dump(deck, deck_file, ensure_ascii=False, indent=JSON_INDENT)
 
 
-def normalize_card(raw_card: dict, card_id: int) -> dict:
+def normalize_card(raw_card: Flashcard, card_id: int) -> Flashcard:
     """Normalize a card loaded from JSON for UI and session usage."""
     return {
         "question": str(raw_card.get("question", "")).strip(),
         "answer": str(raw_card.get("answer", "")).strip(),
-        "tip": raw_card.get("tip"),
+        "tip": str(raw_card.get("tip") or ""),
         "tags": list(raw_card.get("tags") or []),
-        "id": raw_card.get("id", card_id),
+        "id": int(raw_card.get("id", card_id)),
     }
 
 
-def empty_card(card_id: int) -> dict:
+def empty_card(card_id: int) -> Flashcard:
     """Factory used by the editor for new cards or empty decks."""
     return {
         "question": "",
         "answer": "",
-        "tip": None,
+        "tip": "",
         "tags": [],
         "id": card_id,
     }

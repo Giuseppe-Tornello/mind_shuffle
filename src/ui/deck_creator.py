@@ -5,6 +5,7 @@ from textual.widget import Widget
 from textual.widgets import Button, Input, Label, Static
 
 from src.deck_editor_storage import create_deck
+from src.data.constants import Flashcard
 from src.ui import ui_constants
 
 
@@ -32,7 +33,7 @@ class DeckCreator(Widget):
     def __init__(
         self,
         initial_deck_name: str = "",
-        initial_cards: list[dict] | None = None,
+        initial_cards: list[Flashcard] | None = None,
         back_deck_name: str = "",
     ) -> None:
         super().__init__()

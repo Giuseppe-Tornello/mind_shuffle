@@ -13,7 +13,7 @@ def test_create_deck_writes_normalized_file(tmp_path: Path, monkeypatch: MonkeyP
 
     created_name = create_deck(
         "  demo  ",
-        cards=[{"question": "Q", "answer": "A"}],
+        cards=[{"question": "Q", "answer": "A", "tip": "", "tags": [], "id": 1}],
     )
 
     assert created_name == "demo"

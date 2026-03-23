@@ -1,6 +1,7 @@
 import json
 import logging
 
+from src.data.constants import Flashcard
 from src.deck_editor_storage import (
     DeckFileError,
     deck_exists,
@@ -22,8 +23,8 @@ class DeckEditorSession:
         self.initial_deck_name = initial_deck_name
         self.decks = load_deck_names()
         self.deck_name = ""
-        self.original_cards: list[dict] = []
-        self.cards: list[dict] = []
+        self.original_cards: list[Flashcard] = []
+        self.cards: list[Flashcard] = []
         self.current_index = 0
         self.is_dirty = False
 
@@ -57,7 +58,7 @@ class DeckEditorSession:
         self.is_dirty = False
         return True
 
-    def current_card(self) -> dict:
+    def current_card(self) -> Flashcard:
         if not self.cards:
             return empty_card(1)
         return self.cards[self.current_index]
@@ -91,7 +92,7 @@ class DeckEditorSession:
         self.cards[self.current_index] = {
             "question": question.strip(),
             "answer": answer.strip(),
-            "tip": tip.strip() or None,
+            "tip": tip.strip() or "",
             "tags": tags,
             "id": self.cards[self.current_index].get("id", self.current_index + 1),
         }

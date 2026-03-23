@@ -5,6 +5,7 @@ from textual.widget import Widget
 from textual.widgets import Button, Static
 
 from src.deck_manager_session import DeckManagerSession
+from src.data.constants import Flashcard
 from src.ui import ui_constants
 
 
@@ -17,7 +18,7 @@ class DeckManagerActions(Widget):
     class DuplicateDeckRequested(Message):
         """Request creation of a copy of the current deck."""
 
-        def __init__(self, cards: list[dict], suggested_name: str, source_deck_name: str) -> None:
+        def __init__(self, cards: list[Flashcard], suggested_name: str, source_deck_name: str) -> None:
             super().__init__()
             self.cards = cards
             self.suggested_name = suggested_name

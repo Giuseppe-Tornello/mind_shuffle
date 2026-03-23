@@ -5,7 +5,7 @@ USER_PATH = "storage/user/"
 DECKS_PATH = "storage/decks/"
 DECKS_EXTENSION = ".json"
 CARD_ATTRIBUTES = {"question", "answer", "tip", "tags", "id"}
-OPTIONAL_ATTRIBUTES = {"tip"}
+OPTIONAL_ATTRIBUTES = {"tip", "tags"}
 JSON_ENCODING = "utf-8"
 JSON_INDENT = 2
 

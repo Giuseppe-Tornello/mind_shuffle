@@ -1,5 +1,7 @@
 from json import load, JSONDecodeError
-from .data.constants import CARD_ATTRIBUTES, OPTIONAL_ATTRIBUTES, JSON_ENCODING, DECKS_EXTENSION, Flashcard
+from src.data.constants import CARD_ATTRIBUTES, OPTIONAL_ATTRIBUTES, JSON_ENCODING, DECKS_EXTENSION, Flashcard
+import logging
+LOGGER = logging.getLogger(__name__)
 
 
 def is_valid_deck(deck: list[Flashcard]) -> bool:
@@ -29,16 +31,19 @@ def is_valid_deck(deck: list[Flashcard]) -> bool:
 def is_valid_deck_file(path: str) -> bool:
     """opens file path and checks if deck is valid"""
     if not is_valid_deck_extension(path):
+        LOGGER.warning("Rejected deck file with unsupported extension: %s", path)
         return False
 
     try:
         with open(path, "r", encoding=JSON_ENCODING) as f:
             deck = load(f)
             if not isinstance(deck, list):
+                LOGGER.warning("Rejected deck file with non-list content: %s", path)
                 return False
             return is_valid_deck(deck)
 
     except (FileNotFoundError, OSError, JSONDecodeError):
+        LOGGER.exception("Failed to decode deck file: %s", path)
         return False
 
 

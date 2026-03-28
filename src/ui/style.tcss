@@ -41,6 +41,7 @@ $menu-title-padding-x: 1;
     color: #e2e8f0;
     border: none;
     text-align: left;
+    content-align: left middle;
 }
 
 #menu Button:focus,

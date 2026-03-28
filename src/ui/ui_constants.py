@@ -69,7 +69,6 @@ DECK_EDITOR_NEW_BUTTON = "Nuova domanda"
 DECK_EDITOR_REMOVE_BUTTON = "Rimuovi domanda"
 DECK_EDITOR_CANCEL_BUTTON = "Annulla modifiche"
 DECK_EDITOR_SAVE_BUTTON = "Salva modifiche"
-DECK_EDITOR_DELETE_BUTTON = "Elimina mazzo"
 
 DECK_IMPORTER_TITLE = "Importa un mazzo"
 DECK_IMPORTER_URL_PLACEHOLDER = "URL del file .json"

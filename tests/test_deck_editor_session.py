@@ -55,9 +55,10 @@ def test_load_selected_deck_keeps_valid_cards(
 def test_has_unsaved_changes():
     session = DeckEditorSession(initial_deck_name="valid")
 
-    assert session.has_unsaved_changes() == False
+    assert not session.has_unsaved_changes()
+
 
 def test_has_has_decks():
     session = DeckEditorSession(initial_deck_name="valid")
 
-    assert session.has_decks() == True
+    assert session.has_decks()

@@ -1,7 +1,7 @@
 [
   {
     "question": "What is a Python list?",
-    "answer": "An ordered and mutable collection of elements.sssss",
+    "answer": "An ordered and mutable collection of elements.",
     "tip": "Lists use square brackets.",
     "tags": [
       "python",

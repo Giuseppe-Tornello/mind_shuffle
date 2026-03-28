@@ -1,0 +1,41 @@
+[
+  {
+    "question": "Qual è la differenza tra HTTP e HTTPS?",
+    "answer": "HTTPS è la versione sicura di HTTP, utilizza la crittografia SSL per cifrare la comunicazione client-server",
+    "tip": "Uno è più sicuro di un altro.",
+    "tags": [
+      "Reti",
+      "protocollo"
+    ],
+    "id": 1
+  },
+  {
+    "question": "Su che porte opera il protocollo FTP?",
+    "answer": "Il protocollo FTP utilizza la porta 21 come canale di controllo e la porta 20 come canale per il trasferimento dati.",
+    "tip": "Utilizza due porte...",
+    "tags": [
+      "protocollo",
+      "reti"
+    ],
+    "id": 2
+  },
+  {
+    "question": "Che protocollo utilizza la porta 53?",
+    "answer": "DNS, Domain Name System",
+    "tip": "Domain...",
+    "tags": [
+      "Reti",
+      "protocollo"
+    ],
+    "id": 3
+  },
+  {
+    "question": "Qual è la prima rete nazionale?",
+    "answer": "Il GARR",
+    "tip": "",
+    "tags": [
+      "Reti"
+    ],
+    "id": 4
+  }
+]

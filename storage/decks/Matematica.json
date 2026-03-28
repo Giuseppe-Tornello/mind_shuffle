@@ -1,0 +1,23 @@
+[
+  {
+    "question": "2+2",
+    "answer": "4",
+    "tip": "radice di 16",
+    "tags": [],
+    "id": 1
+  },
+  {
+    "question": "8 x 7",
+    "answer": "56",
+    "tip": "Impara le tabelline",
+    "tags": [],
+    "id": 2
+  },
+  {
+    "question": "66 + 1",
+    "answer": "67",
+    "tip": "",
+    "tags": [],
+    "id": 3
+  }
+]

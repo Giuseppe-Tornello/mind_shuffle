@@ -71,12 +71,6 @@ class DeckEditor(Widget):
                     id="deck_editor_save",
                     variant="primary",
                 )
-                if not self.create_mode:
-                    yield Button(
-                        ui_constants.DECK_EDITOR_DELETE_BUTTON,
-                        id="deck_editor_delete",
-                        variant="error",
-                    )
             yield Static("", id="deck_editor_status")
 
     def on_mount(self) -> None:

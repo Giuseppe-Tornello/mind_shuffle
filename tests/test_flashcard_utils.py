@@ -2,11 +2,13 @@ from src.data.flashcard_utils import normalize_question_cards
 from src.data.constants import Flashcard
 
 NORMALIZED_DECK: list[Flashcard] = [
-    {"question": "What is a Python list?",
-    "answer": "An ordered and mutable collection of elements.",
-    "tip": "Lists use square brackets.",
-    "tags": [],
-    "id": 0},
+    {
+        "question": "What is a Python list?",
+        "answer": "An ordered and mutable collection of elements.",
+        "tip": "Lists use square brackets.",
+        "tags": [],
+        "id": 0
+    },
 ]
 
 

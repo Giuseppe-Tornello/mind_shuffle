@@ -9,7 +9,7 @@ The user can:
 ## Technical details
 
 - The code will be entirely written in Python
-- Terminal user interface using the [Textual framework](https://textual.textualize.io/)
+- Terminal user interface using [Textual framework](https://textual.textualize.io/)
 - Unit-tests will be created
 - Every commit will be made with [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
 - The whole code will be written by keeping [this article](https://testdriven.io/blog/clean-code-python/) in mind

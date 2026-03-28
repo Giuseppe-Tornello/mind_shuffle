@@ -9,26 +9,43 @@ The user can:
 ## Technical details
 
 - The code will be entirely written in Python
-- Terminal user interface using the "Textual" framework
+- Terminal user interface using the [Textual framework](https://textual.textualize.io/)
 - Unit-tests will be created
 - Every commit will be made with [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
 - The whole code will be written by keeping [this article](https://testdriven.io/blog/clean-code-python/) in mind
 
-# 🇮🇹 Idea
-Sviluppare un programma di supporto agli studenti che necessitano di ripassare.
+# How to run
 
-L'utente potrà:
-- Ripassare: l'utente potrà selezionare la materia e/o gli argomenti, il programma mostrerà delle domande (sotto forma di carta) in ordine casuale e l'utente potrà rispondere, dopodichè la carta si girerà e l'utente e avrà modo di auto-valutarsi.
-- Importare nuovi mazzi: sarà possibile importare nuovi mazzi attraverso file json, tramite url o incollando direttamente il contenuto del file.
-- Creare, modificare e rimuovere i mazzi di carte e le singole carte di ogni mazzo.
+1. Clone this repository:
 
-## Lato tecnico
+    ```
+    git clone https://github.com/Giuseppe-Tornello/mind_shuffle.git
+    cd mind_shuffle/
+    ```
+2. Create python virtual enviroment
 
-- Il programma verrà scritto interamente in python
-- Interfaccia grafica da terminale tramite il framework "Textual" 
-- Verranno effettuati unit-test
-- Verranno utilizzati i [Conventional Commit](https://www.conventionalcommits.org/en/v1.0.0/)
-- Tutto il codice verrà scritto tenendo a mente [questo articolo](https://testdriven.io/blog/clean-code-python/)
+    ```
+    python -m venv venv
+    ```
+3. Activate virtual enviroment
+    - Windows:
+        ```
+        venv\Scripts\activate
+        ```
+    - Linux / macOS
+        ```
+        source venv/bin/activate
+        # This command might vary depending on your shell type
+        ```
+4. Install dependecies
+    ```
+    pip install -r requirements.txt
+    ```
+5. Run the program
+    ```
+    python main.py
+    ```
+
 
 # Contributors
 - [Kristian Pintaudi](https://github.com/Kristoferz)

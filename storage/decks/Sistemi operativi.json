@@ -1,0 +1,40 @@
+[
+  {
+    "question": "Che cos'è un processo?",
+    "answer": "Un'istanza di un programma in esecuzione",
+    "tip": "",
+    "tags": [
+      "OS"
+    ],
+    "id": 1
+  },
+  {
+    "question": "Che cos'è il Raid 0?",
+    "answer": "È una configurazione di archiviazione che suddivide i dati in segmenti uguali e li scrive contemporaneamente su due o più dischi",
+    "tip": "",
+    "tags": [
+      "OS",
+      "Raid"
+    ],
+    "id": 2
+  },
+  {
+    "question": "Per cosa sta l'acronimo 'RAM'",
+    "answer": "Random Access Memory",
+    "tip": "",
+    "tags": [
+      "OS"
+    ],
+    "id": 3
+  },
+  {
+    "question": "Linux è nettamente superiore a Windows?",
+    "answer": "Assolutamente SÌ",
+    "tip": "La risposta è ovvia",
+    "tags": [
+      "OS",
+      "meme"
+    ],
+    "id": 4
+  }
+]

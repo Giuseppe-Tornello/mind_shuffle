@@ -4,9 +4,8 @@ from json import JSONDecodeError
 from pathlib import Path
 from typing import cast
 
-from src.data.constants import Flashcard, JSON_ENCODING, JSON_INDENT
+from src.data.constants import JSON_ENCODING, JSON_INDENT, Flashcard
 from src.deckcheck import is_valid_deck, is_valid_deck_file
-
 
 LOGGER = logging.getLogger(__name__)
 PROJECT_ROOT = Path(__file__).resolve().parent.parent

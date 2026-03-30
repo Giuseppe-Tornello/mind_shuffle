@@ -2,16 +2,10 @@ import json
 import logging
 
 from src.data.constants import Flashcard
-from src.deck_editor_storage import (
-    DeckFileError,
-    deck_exists,
-    delete_deck,
-    deck_file_path,
-    empty_card,
-    load_deck_cards,
-    load_deck_names,
-    write_deck_file,
-)
+from src.deck_editor_storage import (DeckFileError, deck_exists,
+                                     deck_file_path, delete_deck, empty_card,
+                                     load_deck_cards, load_deck_names,
+                                     write_deck_file)
 
 LOGGER = logging.getLogger(__name__)
 

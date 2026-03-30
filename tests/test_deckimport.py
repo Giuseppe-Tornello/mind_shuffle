@@ -1,5 +1,5 @@
-from _pytest.monkeypatch import MonkeyPatch
 import requests
+from _pytest.monkeypatch import MonkeyPatch
 
 from src.deck_importer_service import DeckImporterService
 from tests.test_constants import VALID_DECK

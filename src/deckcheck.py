@@ -1,6 +1,9 @@
-from json import load, JSONDecodeError
-from src.data.constants import CARD_ATTRIBUTES, OPTIONAL_ATTRIBUTES, JSON_ENCODING, DECKS_EXTENSION, Flashcard
 import logging
+from json import JSONDecodeError, load
+
+from src.data.constants import (CARD_ATTRIBUTES, DECKS_EXTENSION,
+                                JSON_ENCODING, OPTIONAL_ATTRIBUTES, Flashcard)
+
 LOGGER = logging.getLogger(__name__)
 
 

@@ -4,8 +4,8 @@ from textual.message import Message
 from textual.widget import Widget
 from textual.widgets import Button, Input, Label, Static
 
-from src.deck_editor_storage import create_deck
 from src.data.constants import Flashcard
+from src.deck_editor_storage import create_deck
 from src.ui import ui_constants
 
 

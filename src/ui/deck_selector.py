@@ -6,10 +6,11 @@ from textual.message import Message
 from textual.widget import Widget
 from textual.widgets import Label, ListItem, ListView, Static
 
-from src.data.flashcard_utils import normalize_question_cards
-from src.deck_editor_storage import deck_file_path, load_deck_names, read_deck_file
-from src.ui import ui_constants
 from src.data.constants import Flashcard
+from src.data.flashcard_utils import normalize_question_cards
+from src.deck_editor_storage import (deck_file_path, load_deck_names,
+                                     read_deck_file)
+from src.ui import ui_constants
 
 
 class DeckData(TypedDict):

@@ -1,7 +1,7 @@
 import time
 
-from src.deck_manager_session import DeckManagerSession
 from src.deck_editor_storage import create_deck, delete_deck, load_deck_names
+from src.deck_manager_session import DeckManagerSession
 
 
 def _unique_name(prefix: str = "test_deck_") -> str:

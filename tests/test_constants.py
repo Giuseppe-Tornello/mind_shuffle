@@ -1,4 +1,5 @@
 from src.data.constants import Flashcard
+
 # flake8: noqa: E501
 
 

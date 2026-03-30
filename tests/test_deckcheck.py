@@ -1,4 +1,5 @@
-from src.deckcheck import is_valid_deck_extension, is_valid_deck_file, is_valid_deck, Flashcard
+from src.deckcheck import (Flashcard, is_valid_deck, is_valid_deck_extension,
+                           is_valid_deck_file)
 from tests.test_constants import TEST_DECKS_PATH, VALID_DECK
 
 

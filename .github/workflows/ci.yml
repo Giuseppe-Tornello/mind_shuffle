@@ -41,5 +41,11 @@ jobs:
       - name: Lint with mypy
         run: mypy $(git ls-files '*.py')
 
+      - name: Check code formatting with black
+        run: black --check --diff $(git ls-files '*.py')
+
+      - name: Check code formatting with isort
+        run: isort --check-only --diff $(git ls-files '*.py')
+
       - name: Test with pytest
         run: pytest --cov src tests/

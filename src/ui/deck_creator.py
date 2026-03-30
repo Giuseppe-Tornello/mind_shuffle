@@ -48,7 +48,10 @@ class DeckCreator(Widget):
             yield Input(id="deck_name_input")
             with Horizontal(id="deck_creator_actions"):
                 yield Button(ui_constants.ACTION_BACK, id="deck_creator_back")
-                yield Button(ui_constants.DECK_CREATOR_CREATE_DECK_BUTTON, id="create_deck_button")
+                yield Button(
+                    ui_constants.DECK_CREATOR_CREATE_DECK_BUTTON,
+                    id="create_deck_button",
+                )
             yield Static("", id="deck_creator_status")
 
     def on_mount(self) -> None:
@@ -79,7 +82,9 @@ class DeckCreator(Widget):
             return
         # The parent screen uses this message to reopen DeckEditor
         # with the newly created deck already selected.
-        self._status().update(ui_constants.DECK_CREATOR_SUCCESS.format(deck_name=deck_name))
+        self._status().update(
+            ui_constants.DECK_CREATOR_SUCCESS.format(deck_name=deck_name)
+        )
         self.post_message(self.DeckCreated(deck_name))
 
     def has_unsaved_changes(self) -> bool:

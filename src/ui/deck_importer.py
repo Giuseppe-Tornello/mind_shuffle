@@ -21,11 +21,15 @@ class DeckImporter(Widget):
     def compose(self) -> ComposeResult:
         with VerticalScroll(id="deck_importer"):
             yield Label(ui_constants.DECK_IMPORTER_TITLE, id="deck_importer_title")
-            yield Label(ui_constants.DECK_IMPORTER_URL_PLACEHOLDER, classes="field_label")
+            yield Label(
+                ui_constants.DECK_IMPORTER_URL_PLACEHOLDER, classes="field_label"
+            )
             yield Input(
                 id="deck_importer_url",
             )
-            yield Label(ui_constants.DECK_IMPORTER_NAME_PLACEHOLDER, classes="field_label")
+            yield Label(
+                ui_constants.DECK_IMPORTER_NAME_PLACEHOLDER, classes="field_label"
+            )
             yield Input(
                 id="deck_importer_name",
             )
@@ -35,7 +39,9 @@ class DeckImporter(Widget):
                     id="deck_importer_button",
                     variant="primary",
                 )
-            yield Static(ui_constants.DECK_IMPORTER_READY_STATUS, id="deck_importer_status")
+            yield Static(
+                ui_constants.DECK_IMPORTER_READY_STATUS, id="deck_importer_status"
+            )
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         if event.button.id != "deck_importer_button":

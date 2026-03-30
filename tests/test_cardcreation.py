@@ -4,17 +4,27 @@ from pathlib import Path
 from _pytest.monkeypatch import MonkeyPatch
 
 from src.data.constants import JSON_ENCODING
-from src.deck_editor_storage import (add_card_to_deck, create_deck,
-                                     deck_file_path, delete_card_from_deck,
-                                     import_deck, read_deck_file, rename_deck,
-                                     write_deck_file)
+from src.deck_editor_storage import (
+    add_card_to_deck,
+    create_deck,
+    deck_file_path,
+    delete_card_from_deck,
+    import_deck,
+    read_deck_file,
+    rename_deck,
+    write_deck_file,
+)
 from tests.test_constants import FLASHCARD_SAMPLE, INVALID_DECK, VALID_DECK
 
 
-def test_deck_file_path_uses_project_storage(tmp_path: Path, monkeypatch: MonkeyPatch) -> None:
+def test_deck_file_path_uses_project_storage(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+) -> None:
     monkeypatch.setattr("src.deck_editor_storage.PROJECT_ROOT", tmp_path)
 
-    assert deck_file_path("test_deck") == tmp_path / "storage" / "decks" / "test_deck.json"
+    assert (
+        deck_file_path("test_deck") == tmp_path / "storage" / "decks" / "test_deck.json"
+    )
 
 
 def test_read_deck_file(tmp_path: Path) -> None:

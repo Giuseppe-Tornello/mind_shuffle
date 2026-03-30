@@ -25,12 +25,14 @@ def normalize_question_cards(cards: object) -> list[Flashcard]:
         if not question or not answer:
             continue
 
-        normalized_cards.append({
-            "question": question,
-            "answer": answer,
-            "tip": tip,
-            "tags": [],
-            "id": 0,
-        })
+        normalized_cards.append(
+            {
+                "question": question,
+                "answer": answer,
+                "tip": tip,
+                "tags": [],
+                "id": 0,
+            }
+        )
 
     return normalized_cards

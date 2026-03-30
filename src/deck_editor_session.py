@@ -2,10 +2,16 @@ import json
 import logging
 
 from src.data.constants import Flashcard
-from src.deck_editor_storage import (DeckFileError, deck_exists,
-                                     deck_file_path, delete_deck, empty_card,
-                                     load_deck_cards, load_deck_names,
-                                     write_deck_file)
+from src.deck_editor_storage import (
+    DeckFileError,
+    deck_exists,
+    deck_file_path,
+    delete_deck,
+    empty_card,
+    load_deck_cards,
+    load_deck_names,
+    write_deck_file,
+)
 
 LOGGER = logging.getLogger(__name__)
 
@@ -134,7 +140,9 @@ class DeckEditorSession:
         """Cycle through decks, but only when there are no pending changes."""
         if len(self.decks) <= 1 or self.is_dirty:
             return False
-        current_index = self.decks.index(self.deck_name) if self.deck_name in self.decks else 0
+        current_index = (
+            self.decks.index(self.deck_name) if self.deck_name in self.decks else 0
+        )
         next_index = (current_index + step) % len(self.decks)
         return self.load_selected_deck(self.decks[next_index])
 
@@ -153,7 +161,9 @@ class DeckEditorSession:
             LOGGER.warning("Cannot save deck without a selected deck name")
             return "name_error"
         if not self.cards_are_valid():
-            LOGGER.warning("Cannot save deck '%s': one or more cards are invalid", self.deck_name)
+            LOGGER.warning(
+                "Cannot save deck '%s': one or more cards are invalid", self.deck_name
+            )
             return "card_error"
 
         # Only here does the working copy become definitive and replace the real file.

@@ -26,7 +26,9 @@ DECK_CREATOR_TITLE = "Crea un nuovo mazzo"
 DECK_CREATOR_CREATE_DECK_BUTTON = "Crea mazzo"
 DECK_CREATOR_SUCCESS = "Mazzo salvato: {deck_name}"
 DECK_CREATOR_DECK_ERROR = "Inserisci un nome mazzo valido."
-DECK_CREATOR_UNSAVED_WARNING = "Hai modifiche non salvate. Salva il mazzo prima di uscire da questa schermata."
+DECK_CREATOR_UNSAVED_WARNING = (
+    "Hai modifiche non salvate. Salva il mazzo prima di uscire da questa schermata."
+)
 
 DECK_MANAGER_TITLE = "Gestisci i mazzi"
 DECK_MANAGER_EMPTY = "Nessun mazzo disponibile da gestire."
@@ -62,7 +64,9 @@ DECK_EDITOR_SAVE_SUCCESS = "Mazzo salvato: {deck_name}"
 DECK_EDITOR_DELETE_SUCCESS = "Mazzo eliminato: {deck_name}"
 DECK_EDITOR_DELETE_ERROR = "Nessun mazzo da eliminare."
 DECK_EDITOR_NAME_ERROR = "Inserisci un nome mazzo."
-DECK_EDITOR_UNSAVED_WARNING = "Hai modifiche non salvate. Salva il mazzo prima di uscire."
+DECK_EDITOR_UNSAVED_WARNING = (
+    "Hai modifiche non salvate. Salva il mazzo prima di uscire."
+)
 DECK_EDITOR_PREV_BUTTON = "<"
 DECK_EDITOR_NEXT_BUTTON = ">"
 DECK_EDITOR_NEW_BUTTON = "Nuova domanda"
@@ -78,7 +82,9 @@ DECK_IMPORTER_READY_STATUS = "Inserisci un URL JSON valido per importare un mazz
 DECK_IMPORTER_URL_ERROR = "Inserisci un URL del deck."
 DECK_IMPORTER_INVALID_DECK = "Impossibile importare il deck dal link fornito."
 DECK_IMPORTER_SUCCESS = "Mazzo importato: {deck_name}"
-DECK_IMPORTER_NAME_ERROR = "Impossibile determinare il nome del mazzo. Inseriscilo manualmente."
+DECK_IMPORTER_NAME_ERROR = (
+    "Impossibile determinare il nome del mazzo. Inseriscilo manualmente."
+)
 
 QUESTION_MENU_TITLE = "Allenamento domande"
 QUESTION_MENU_INPUT_LABEL = "La tua risposta"
@@ -88,7 +94,9 @@ QUESTION_MENU_WRONG_BUTTON = "Sbagliato"
 QUESTION_MENU_NEXT_BUTTON = "Prossima"
 QUESTION_MENU_FINISH_BUTTON = "Fine"
 QUESTION_MENU_NO_QUESTIONS = "Nessuna domanda disponibile"
-QUESTION_MENU_NO_QUESTIONS_HINT = "Aggiungi un deck o configura delle domande in ui_constants.py"
+QUESTION_MENU_NO_QUESTIONS_HINT = (
+    "Aggiungi un deck o configura delle domande in ui_constants.py"
+)
 QUESTION_MENU_EMPTY_ANSWER = ""
 QUESTION_MENU_EMPTY_TIP = ""
 QUESTION_MENU_QUESTION_MISSING = "Domanda non disponibile"
@@ -107,16 +115,8 @@ SHOW_RESULTS_TOTAL = "Totale domande: {total}"
 SHOW_RESULTS_ACCURACY = "Accuratezza: {accuracy:.0f}%"
 
 MENU_PAGES = {
-    HOME: {
-        "type": "home"
-    },
-    REVISE: {
-        "type": "deck_selector"
-    },
-    EDIT_DECK: {
-        "type": "deck_manager"
-    },
-    EXIT: {
-        "type": "exit"
-    }
+    HOME: {"type": "home"},
+    REVISE: {"type": "deck_selector"},
+    EDIT_DECK: {"type": "deck_manager"},
+    EXIT: {"type": "exit"},
 }

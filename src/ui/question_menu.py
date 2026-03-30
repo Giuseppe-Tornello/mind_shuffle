@@ -33,20 +33,36 @@ class QuestionMenu(Widget):
             yield Label(ui_constants.QUESTION_MENU_TITLE, id="question_menu_title")
             yield Static("", id="question_progress")
             yield Static("", id="question_text")
-            yield Label(ui_constants.QUESTION_MENU_INPUT_LABEL, id="question_input_label")
-            yield Input(
-                id="question_user_input"
+            yield Label(
+                ui_constants.QUESTION_MENU_INPUT_LABEL, id="question_input_label"
             )
+            yield Input(id="question_user_input")
             yield Static("", id="question_answer")
             yield Static("", id="question_tip")
             yield Static("", id="question_stats")
             with Horizontal(id="question_actions"):
-                yield Button(ui_constants.QUESTION_MENU_REVEAL_BUTTON, id="btn_reveal", variant="primary")
-                yield Button(ui_constants.QUESTION_MENU_CORRECT_BUTTON, id="btn_correct", variant="success")
-                yield Button(ui_constants.QUESTION_MENU_WRONG_BUTTON, id="btn_wrong", variant="error")
+                yield Button(
+                    ui_constants.QUESTION_MENU_REVEAL_BUTTON,
+                    id="btn_reveal",
+                    variant="primary",
+                )
+                yield Button(
+                    ui_constants.QUESTION_MENU_CORRECT_BUTTON,
+                    id="btn_correct",
+                    variant="success",
+                )
+                yield Button(
+                    ui_constants.QUESTION_MENU_WRONG_BUTTON,
+                    id="btn_wrong",
+                    variant="error",
+                )
                 yield Button(ui_constants.ACTION_BACK, id="btn_prev")
                 yield Button(ui_constants.QUESTION_MENU_NEXT_BUTTON, id="btn_next")
-                yield Button(ui_constants.QUESTION_MENU_FINISH_BUTTON, id="btn_finish", variant="warning")
+                yield Button(
+                    ui_constants.QUESTION_MENU_FINISH_BUTTON,
+                    id="btn_finish",
+                    variant="warning",
+                )
                 yield Button(ui_constants.ACTION_HOME, id="btn_home")
 
     def on_mount(self) -> None:
@@ -149,7 +165,7 @@ class QuestionMenu(Widget):
         self.post_message(
             self.ShowResultsRequested(
                 correct_answers=self.session.correct_answers,
-                wrong_answers=self.session.wrong_answers
+                wrong_answers=self.session.wrong_answers,
             )
         )
         return True
@@ -180,8 +196,7 @@ class QuestionMenu(Widget):
 
         progress.update(
             ui_constants.QUESTION_MENU_PROGRESS.format(
-                current=self.session.current_index + 1,
-                total=len(self.session.cards)
+                current=self.session.current_index + 1, total=len(self.session.cards)
             )
         )
         question.update(
@@ -195,20 +210,23 @@ class QuestionMenu(Widget):
                 f"{card.get('answer', ui_constants.QUESTION_MENU_ANSWER_MISSING)}"
             )
             tip_text = card.get("tip", "")
-            tip.update(f"{ui_constants.QUESTION_MENU_HINT_PREFIX}: {tip_text}" if tip_text else "")
+            tip.update(
+                f"{ui_constants.QUESTION_MENU_HINT_PREFIX}: {tip_text}"
+                if tip_text
+                else ""
+            )
         else:
             answer.update(
                 ui_constants.QUESTION_MENU_HIDDEN_ANSWER.format(
                     answer_prefix=ui_constants.QUESTION_MENU_ANSWER_PREFIX,
-                    button_name=ui_constants.QUESTION_MENU_REVEAL_BUTTON
+                    button_name=ui_constants.QUESTION_MENU_REVEAL_BUTTON,
                 )
             )
             tip.update(ui_constants.QUESTION_MENU_EMPTY_TIP)
 
         stats.update(
             ui_constants.QUESTION_MENU_STATS.format(
-                correct=self.session.correct_answers,
-                wrong=self.session.wrong_answers
+                correct=self.session.correct_answers, wrong=self.session.wrong_answers
             )
         )
         btn_correct.disabled = answered_current

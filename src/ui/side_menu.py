@@ -40,7 +40,9 @@ class SideMenu(Widget, can_focus=True):
     def on_mount(self) -> None:
         self.focus_current()
         self._refresh_highlight()
-        self.post_message(self.MenuChosen(self.current_menu_name(), focus_content=False))
+        self.post_message(
+            self.MenuChosen(self.current_menu_name(), focus_content=False)
+        )
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         if not event.button.has_class("menu-item") or event.button.name is None:

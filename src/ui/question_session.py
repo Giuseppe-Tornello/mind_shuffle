@@ -5,16 +5,20 @@ class QuestionSession:
     """State and logic for the training session."""
 
     def __init__(self, cards: list[Flashcard] | None = None) -> None:
-        self.cards: list[Flashcard] = [
-            {
-                "question": card["question"],
-                "answer": card["answer"],
-                "tip": card["tip"],
-                "tags": card["tags"],
-                "id": card["id"],
-            }
-            for card in cards
-        ] if cards else []
+        self.cards: list[Flashcard] = (
+            [
+                {
+                    "question": card["question"],
+                    "answer": card["answer"],
+                    "tip": card["tip"],
+                    "tags": card["tags"],
+                    "id": card["id"],
+                }
+                for card in cards
+            ]
+            if cards
+            else []
+        )
         self.current_index = 0
         self.answer_visible = False
         self._score = {"correct": 0, "wrong": 0}

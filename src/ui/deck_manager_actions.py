@@ -18,7 +18,9 @@ class DeckManagerActions(Widget):
     class DuplicateDeckRequested(Message):
         """Request creation of a copy of the current deck."""
 
-        def __init__(self, cards: list[Flashcard], suggested_name: str, source_deck_name: str) -> None:
+        def __init__(
+            self, cards: list[Flashcard], suggested_name: str, source_deck_name: str
+        ) -> None:
             super().__init__()
             self.cards = cards
             self.suggested_name = suggested_name
@@ -38,8 +40,12 @@ class DeckManagerActions(Widget):
 
     def compose(self) -> ComposeResult:
         with VerticalScroll(id="deck_manager_actions_view"):
-            yield Static(ui_constants.DECK_MANAGER_ACTIONS_TITLE, id="deck_manager_actions_title")
-            yield Static(self.session.current_deck_name(), id="deck_manager_actions_name")
+            yield Static(
+                ui_constants.DECK_MANAGER_ACTIONS_TITLE, id="deck_manager_actions_title"
+            )
+            yield Static(
+                self.session.current_deck_name(), id="deck_manager_actions_name"
+            )
             yield Static(
                 ui_constants.DECK_MANAGER_COUNT.format(
                     card_count=self.session.current_deck_card_count()
@@ -47,10 +53,20 @@ class DeckManagerActions(Widget):
                 id="deck_manager_actions_count",
             )
             with Horizontal(id="deck_manager_actions_row"):
-                yield Button(ui_constants.DECK_MANAGER_ACTIONS_BACK_BUTTON, id="deck_manager_back")
-                yield Button(ui_constants.DECK_MANAGER_DUPLICATE_BUTTON, id="deck_manager_duplicate")
-                yield Button(ui_constants.DECK_MANAGER_EDIT_BUTTON, id="deck_manager_edit")
-                yield Button(ui_constants.DECK_MANAGER_DELETE_BUTTON, id="deck_manager_delete")
+                yield Button(
+                    ui_constants.DECK_MANAGER_ACTIONS_BACK_BUTTON,
+                    id="deck_manager_back",
+                )
+                yield Button(
+                    ui_constants.DECK_MANAGER_DUPLICATE_BUTTON,
+                    id="deck_manager_duplicate",
+                )
+                yield Button(
+                    ui_constants.DECK_MANAGER_EDIT_BUTTON, id="deck_manager_edit"
+                )
+                yield Button(
+                    ui_constants.DECK_MANAGER_DELETE_BUTTON, id="deck_manager_delete"
+                )
             with Horizontal(id="deck_manager_delete_confirm_row"):
                 yield Static(
                     ui_constants.DECK_MANAGER_DELETE_CONFIRM_TEXT,
@@ -116,4 +132,6 @@ class DeckManagerActions(Widget):
 
     def _refresh_delete_confirmation(self) -> None:
         display = "block" if self.is_confirming_delete else "none"
-        self.query_one("#deck_manager_delete_confirm_row", Horizontal).styles.display = display
+        self.query_one(
+            "#deck_manager_delete_confirm_row", Horizontal
+        ).styles.display = display

@@ -9,7 +9,10 @@ def _unique_name(prefix: str = "test_deck_") -> str:
 
 
 def test_has_decks_and_accessors():
-    name = create_deck(_unique_name(), cards=[{"question": "Q", "answer": "A", "tip": "", "tags": [], "id": 1}])
+    name = create_deck(
+        _unique_name(),
+        cards=[{"question": "Q", "answer": "A", "tip": "", "tags": [], "id": 1}],
+    )
     try:
         dms = DeckManagerSession("")
         assert dms.has_decks() is True
@@ -23,7 +26,10 @@ def test_has_decks_and_accessors():
 
 
 def test_rename_with_empty_name_returns_empty():
-    name = create_deck(_unique_name(), cards=[{"question": "Q", "answer": "A", "tip": "", "tags": [], "id": 1}])
+    name = create_deck(
+        _unique_name(),
+        cards=[{"question": "Q", "answer": "A", "tip": "", "tags": [], "id": 1}],
+    )
     try:
         dms = DeckManagerSession(name)
         result = dms.rename_current_deck("")
@@ -33,7 +39,10 @@ def test_rename_with_empty_name_returns_empty():
 
 
 def test_rename_with_name():
-    name = create_deck(_unique_name("orig_"), cards=[{"question": "Q", "answer": "A", "tip": "", "tags": [], "id": 1}])
+    name = create_deck(
+        _unique_name("orig_"),
+        cards=[{"question": "Q", "answer": "A", "tip": "", "tags": [], "id": 1}],
+    )
     try:
         dms = DeckManagerSession(name)
         new_name = _unique_name("renamed_")
@@ -47,7 +56,10 @@ def test_rename_with_name():
 
 
 def test_delete_current_deck():
-    name = create_deck(_unique_name(), cards=[{"question": "Q", "answer": "A", "tip": "", "tags": [], "id": 1}])
+    name = create_deck(
+        _unique_name(),
+        cards=[{"question": "Q", "answer": "A", "tip": "", "tags": [], "id": 1}],
+    )
     try:
         dms = DeckManagerSession(name)
         result = dms.delete_current_deck()

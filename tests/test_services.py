@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from _pytest.monkeypatch import MonkeyPatch
 import requests
+from _pytest.monkeypatch import MonkeyPatch
 
 from src.deck_editor_storage import create_deck, import_deck
 from src.deck_importer_service import DeckImporterService

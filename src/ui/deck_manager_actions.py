@@ -4,8 +4,8 @@ from textual.message import Message
 from textual.widget import Widget
 from textual.widgets import Button, Static
 
-from src.deck_manager_session import DeckManagerSession
 from src.data.constants import Flashcard
+from src.deck_manager_session import DeckManagerSession
 from src.ui import ui_constants
 
 

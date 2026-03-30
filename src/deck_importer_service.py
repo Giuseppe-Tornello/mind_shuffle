@@ -5,9 +5,8 @@ from urllib.parse import urlparse
 import requests
 
 from src.data.constants import Flashcard
-from src.deckcheck import is_valid_deck, is_valid_deck_extension
 from src.deck_editor_storage import import_deck
-
+from src.deckcheck import is_valid_deck, is_valid_deck_extension
 
 LOGGER = logging.getLogger(__name__)
 

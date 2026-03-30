@@ -1,11 +1,7 @@
-from src.deck_editor_storage import (
-    deck_file_path,
-    delete_deck,
-    load_deck_names,
-    read_deck_file,
-    rename_deck,
-)
 from src.data.constants import Flashcard
+from src.deck_editor_storage import (deck_file_path, delete_deck,
+                                     load_deck_names, read_deck_file,
+                                     rename_deck)
 
 
 class DeckManagerSession:

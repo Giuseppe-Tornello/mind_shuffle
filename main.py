@@ -11,19 +11,17 @@ from textual.widget import Widget
 from textual.widgets import ListView, Select, Static
 
 from src.data.flashcard_utils import normalize_question_cards
-
 from src.ui import ui_constants
 from src.ui.deck_creator import DeckCreator
 from src.ui.deck_editor import DeckEditor
+from src.ui.deck_importer import DeckImporter
 from src.ui.deck_manager import DeckManager
 from src.ui.deck_manager_actions import DeckManagerActions
-from src.ui.home_view import HomeView
-from src.ui.deck_importer import DeckImporter
 from src.ui.deck_selector import DeckSelector
+from src.ui.home_view import HomeView
 from src.ui.question_menu import QuestionMenu
 from src.ui.show_results import ShowResults
 from src.ui.side_menu import SideMenu
-
 
 STATIC_WIDGET_BUILDERS = {
     "home": HomeView,

@@ -1,5 +1,5 @@
-from src.data.flashcard_utils import normalize_question_cards
 from src.data.constants import Flashcard
+from src.data.flashcard_utils import normalize_question_cards
 
 NORMALIZED_DECK: list[Flashcard] = [
     {

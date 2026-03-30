@@ -6,7 +6,6 @@ from textual.widget import Widget
 from textual.widgets import Button, Input, Label, Static
 
 from src.data.constants import Flashcard
-
 from src.ui import ui_constants
 from src.ui.question_session import QuestionSession
 

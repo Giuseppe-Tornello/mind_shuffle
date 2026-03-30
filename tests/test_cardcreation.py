@@ -3,17 +3,11 @@ from pathlib import Path
 
 from _pytest.monkeypatch import MonkeyPatch
 
-from src.deck_editor_storage import (
-    add_card_to_deck,
-    create_deck,
-    deck_file_path,
-    delete_card_from_deck,
-    import_deck,
-    read_deck_file,
-    rename_deck,
-    write_deck_file,
-)
 from src.data.constants import JSON_ENCODING
+from src.deck_editor_storage import (add_card_to_deck, create_deck,
+                                     deck_file_path, delete_card_from_deck,
+                                     import_deck, read_deck_file, rename_deck,
+                                     write_deck_file)
 from tests.test_constants import FLASHCARD_SAMPLE, INVALID_DECK, VALID_DECK
 
 

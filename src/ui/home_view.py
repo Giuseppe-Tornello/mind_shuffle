@@ -1,5 +1,5 @@
-from pathlib import Path
 from colorsys import hsv_to_rgb
+from pathlib import Path
 
 from rich.text import Text
 from textual.app import ComposeResult
@@ -7,7 +7,6 @@ from textual.events import Resize
 from textual.timer import Timer
 from textual.widget import Widget
 from textual.widgets import Static
-
 
 LOGO_PATH = Path(__file__).resolve().parent / "mind_shuffle_logo.txt"
 HOME_LOGO_HORIZONTAL_PADDING = 4

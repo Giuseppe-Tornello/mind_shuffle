@@ -1,4 +1,5 @@
 """Main application entry point."""
+
 # pylint: disable=too-many-public-methods
 
 from collections.abc import Mapping
@@ -71,7 +72,9 @@ class MainApp(App):
             yield SideMenu()
             with Container(id="content"):
                 with VerticalScroll(id="content_scroll"):
-                    yield Static(ui_constants.SELECT_MENU_ITEM, id="content_placeholder")
+                    yield Static(
+                        ui_constants.SELECT_MENU_ITEM, id="content_placeholder"
+                    )
 
     def on_side_menu_menu_chosen(self, event: SideMenu.MenuChosen) -> None:
         self.show_screen(event.menu_name, focus_content=event.focus_content)
@@ -108,7 +111,9 @@ class MainApp(App):
         self.show_widget(DeckEditor(initial_deck_name=event.deck_name))
 
     def on_deck_creator_back_requested(self, event: DeckCreator.BackRequested) -> None:
-        self.show_widget(DeckManagerActions(event.deck_name) if event.deck_name else DeckManager())
+        self.show_widget(
+            DeckManagerActions(event.deck_name) if event.deck_name else DeckManager()
+        )
 
     def on_deck_manager_create_deck_requested(
         self,
@@ -156,7 +161,9 @@ class MainApp(App):
         self,
         event: DeckEditor.BackRequested,
     ) -> None:
-        self.show_widget(DeckManagerActions(event.deck_name) if event.deck_name else DeckManager())
+        self.show_widget(
+            DeckManagerActions(event.deck_name) if event.deck_name else DeckManager()
+        )
 
     def show_home(self) -> None:
         self.show_screen(ui_constants.HOME, focus_content=False)
@@ -171,14 +178,18 @@ class MainApp(App):
 
         content_data = ui_constants.MENU_PAGES.get(menu_name)
         if content_data is None:
-            self.show_widget(unknown_content_widget(menu_name), focus_content=focus_content)
+            self.show_widget(
+                unknown_content_widget(menu_name), focus_content=focus_content
+            )
             return
 
         self.show_widget(menu_widget(content_data), focus_content=focus_content)
 
     def show_widget(self, content_widget: Widget, focus_content: bool = True) -> None:
         content_widget.styles.width = "1fr"
-        content_widget.styles.height = "1fr" if isinstance(content_widget, HomeView) else "auto"
+        content_widget.styles.height = (
+            "1fr" if isinstance(content_widget, HomeView) else "auto"
+        )
         content_area = self.content_area()
         content_area.remove_children()
         content_area.mount(content_widget)

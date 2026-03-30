@@ -35,12 +35,20 @@ class DeckManager(Widget):
             if not self.session.has_decks():
                 yield Static(ui_constants.DECK_MANAGER_EMPTY, id="deck_manager_empty")
                 with Horizontal(id="deck_manager_empty_actions"):
-                    yield Button(ui_constants.DECK_MANAGER_CREATE_BUTTON, id="deck_manager_create")
-                    yield Button(ui_constants.DECK_MANAGER_IMPORT_BUTTON, id="deck_manager_import")
+                    yield Button(
+                        ui_constants.DECK_MANAGER_CREATE_BUTTON,
+                        id="deck_manager_create",
+                    )
+                    yield Button(
+                        ui_constants.DECK_MANAGER_IMPORT_BUTTON,
+                        id="deck_manager_import",
+                    )
                 yield Static("", id="deck_manager_status")
                 return
 
-            yield Static(ui_constants.DECK_MANAGER_SELECTED_LABEL, id="deck_manager_label")
+            yield Static(
+                ui_constants.DECK_MANAGER_SELECTED_LABEL, id="deck_manager_label"
+            )
             yield ListView(
                 *[
                     ListItem(Label(deck_name, expand=True), name=deck_name)
@@ -52,11 +60,19 @@ class DeckManager(Widget):
             yield Label(ui_constants.DECK_MANAGER_RENAME_LABEL, classes="field_label")
             with Horizontal(id="deck_manager_rename_row"):
                 yield Input(id="deck_manager_rename_input")
-                yield Button(ui_constants.DECK_MANAGER_RENAME_BUTTON, id="deck_manager_rename")
+                yield Button(
+                    ui_constants.DECK_MANAGER_RENAME_BUTTON, id="deck_manager_rename"
+                )
             with Horizontal(id="deck_manager_actions"):
-                yield Button(ui_constants.DECK_MANAGER_CREATE_BUTTON, id="deck_manager_create")
-                yield Button(ui_constants.DECK_MANAGER_IMPORT_BUTTON, id="deck_manager_import")
-                yield Button(ui_constants.DECK_MANAGER_OPEN_BUTTON, id="deck_manager_open")
+                yield Button(
+                    ui_constants.DECK_MANAGER_CREATE_BUTTON, id="deck_manager_create"
+                )
+                yield Button(
+                    ui_constants.DECK_MANAGER_IMPORT_BUTTON, id="deck_manager_import"
+                )
+                yield Button(
+                    ui_constants.DECK_MANAGER_OPEN_BUTTON, id="deck_manager_open"
+                )
             yield Static("", id="deck_manager_status")
 
     def on_mount(self) -> None:
@@ -95,7 +111,9 @@ class DeckManager(Widget):
         if not renamed_name:
             self._status().update(ui_constants.DECK_MANAGER_RENAME_ERROR)
             return
-        self._status().update(ui_constants.DECK_MANAGER_RENAME_SUCCESS.format(deck_name=renamed_name))
+        self._status().update(
+            ui_constants.DECK_MANAGER_RENAME_SUCCESS.format(deck_name=renamed_name)
+        )
         self.refresh(recompose=True)
         self.call_after_refresh(self._restore_selection)
 
@@ -107,7 +125,9 @@ class DeckManager(Widget):
                 card_count=self.session.current_deck_card_count()
             )
         )
-        self.query_one("#deck_manager_rename_input", Input).value = self.session.current_deck_name()
+        self.query_one("#deck_manager_rename_input", Input).value = (
+            self.session.current_deck_name()
+        )
 
     def _restore_selection(self) -> None:
         self._refresh_content()

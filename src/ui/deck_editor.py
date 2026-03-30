@@ -48,11 +48,17 @@ class DeckEditor(Widget):
                 yield Static("", id="deck_editor_selected_name")
 
             yield Static("", id="deck_editor_progress")
-            yield Label(ui_constants.DECK_EDITOR_CARD_NUMBER_LABEL, classes="field_label")
+            yield Label(
+                ui_constants.DECK_EDITOR_CARD_NUMBER_LABEL, classes="field_label"
+            )
             with Horizontal(id="deck_editor_jump_row"):
-                yield Button(ui_constants.DECK_EDITOR_PREV_BUTTON, id="deck_editor_prev")
+                yield Button(
+                    ui_constants.DECK_EDITOR_PREV_BUTTON, id="deck_editor_prev"
+                )
                 yield Input(id="deck_editor_card_number")
-                yield Button(ui_constants.DECK_EDITOR_NEXT_BUTTON, id="deck_editor_next")
+                yield Button(
+                    ui_constants.DECK_EDITOR_NEXT_BUTTON, id="deck_editor_next"
+                )
             yield Label(ui_constants.FIELD_QUESTION, classes="field_label")
             yield Input(id="deck_editor_question")
             yield Label(ui_constants.FIELD_ANSWER, classes="field_label")
@@ -63,9 +69,13 @@ class DeckEditor(Widget):
             yield Input(id="deck_editor_tags")
             with Horizontal(id="deck_editor_actions"):
                 yield Button(ui_constants.DECK_EDITOR_NEW_BUTTON, id="deck_editor_new")
-                yield Button(ui_constants.DECK_EDITOR_REMOVE_BUTTON, id="deck_editor_remove")
+                yield Button(
+                    ui_constants.DECK_EDITOR_REMOVE_BUTTON, id="deck_editor_remove"
+                )
                 yield Button(ui_constants.ACTION_BACK, id="deck_editor_back")
-                yield Button(ui_constants.DECK_EDITOR_CANCEL_BUTTON, id="deck_editor_cancel")
+                yield Button(
+                    ui_constants.DECK_EDITOR_CANCEL_BUTTON, id="deck_editor_cancel"
+                )
                 yield Button(
                     ui_constants.DECK_EDITOR_SAVE_BUTTON,
                     id="deck_editor_save",
@@ -167,7 +177,9 @@ class DeckEditor(Widget):
             self._status().update(ui_constants.DECK_EDITOR_CARD_ERROR)
             return
         self._status().update(
-            ui_constants.DECK_EDITOR_SAVE_SUCCESS.format(deck_name=self.session.deck_name)
+            ui_constants.DECK_EDITOR_SAVE_SUCCESS.format(
+                deck_name=self.session.deck_name
+            )
         )
         self._refresh_deck_controls()
         self._schedule_dirty_reset()
@@ -193,7 +205,9 @@ class DeckEditor(Widget):
     def _sync_inputs_from_session(self) -> None:
         card = self.session.current_card()
         current, total = self.session.progress()
-        self._set_input_value(self._input("deck_editor_question"), card.get("question", ""))
+        self._set_input_value(
+            self._input("deck_editor_question"), card.get("question", "")
+        )
         self._set_input_value(self._input("deck_editor_answer"), card.get("answer", ""))
         self._set_input_value(self._input("deck_editor_tip"), card.get("tip") or "")
         self._set_input_value(
@@ -241,8 +255,10 @@ class DeckEditor(Widget):
             if tag.strip()
         ]
         return (
-            self._input("deck_editor_question").value.strip() == card.get("question", "")
-            and self._input("deck_editor_answer").value.strip() == card.get("answer", "")
+            self._input("deck_editor_question").value.strip()
+            == card.get("question", "")
+            and self._input("deck_editor_answer").value.strip()
+            == card.get("answer", "")
             and self._input("deck_editor_tip").value.strip() == (card.get("tip") or "")
             and current_tags == list(card.get("tags") or [])
         )

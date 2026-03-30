@@ -1,5 +1,9 @@
-from src.deckcheck import (Flashcard, is_valid_deck, is_valid_deck_extension,
-                           is_valid_deck_file)
+from src.deckcheck import (
+    Flashcard,
+    is_valid_deck,
+    is_valid_deck_extension,
+    is_valid_deck_file,
+)
 from tests.test_constants import TEST_DECKS_PATH, VALID_DECK
 
 
@@ -21,7 +25,7 @@ def test_is_valid_deck_file() -> None:
         "invalid_deck3.json",  # invalid json
         "invalid_deck4.json",  # not a list
         "invalid_deck5.json",  # does not exist
-        ]
+    ]
 
     temp_deck_path = TEST_DECKS_PATH + valid_deck
     assert isinstance(is_valid_deck_file(temp_deck_path), bool)
@@ -40,20 +44,50 @@ def test_is_valid_deck() -> None:
 
     invalid_deck0: list[Flashcard] = []
     invalid_deck1: list[Flashcard] = [
-        {"id": 1, "question": "Question 1", "answer": "Answer 1", "tags": ["tag1"], "tip": "tip"},
-        {"id": 1, "question": "Question 2", "answer": "Answer 2", "tags": ["tag2"], "tip": ""}
+        {
+            "id": 1,
+            "question": "Question 1",
+            "answer": "Answer 1",
+            "tags": ["tag1"],
+            "tip": "tip",
+        },
+        {
+            "id": 1,
+            "question": "Question 2",
+            "answer": "Answer 2",
+            "tags": ["tag2"],
+            "tip": "",
+        },
         # id is <= than the previous card
     ]
 
     invalid_deck2: list[Flashcard] = [
-        {"id": 1, "question": "Question 1", "answer": "Answer 1", "tags": ["tag1"], "tip": "tip"},
-        {"id": 2, "question": "Question 2", "answer_bla": "Answer 2", "tags": ["tag2"], "tip": ""}  # type: ignore[typeddict-item,typeddict-unknown-key] # noqa: E501
+        {
+            "id": 1,
+            "question": "Question 1",
+            "answer": "Answer 1",
+            "tags": ["tag1"],
+            "tip": "tip",
+        },
+        {"id": 2, "question": "Question 2", "answer_bla": "Answer 2", "tags": ["tag2"], "tip": ""},  # type: ignore[typeddict-item,typeddict-unknown-key] # noqa: E501
         # answer_bla is not permitted
     ]
 
     invalid_deck3: list[Flashcard] = [
-        {"id": 1, "question": "Question 1", "answer": "Answer 1", "tags": ["tag1"], "tip": "tip"},
-        {"id": 2, "question": "Question 2", "answer": "", "tags": ["tag2"], "tip": ""}  # answer is empty
+        {
+            "id": 1,
+            "question": "Question 1",
+            "answer": "Answer 1",
+            "tags": ["tag1"],
+            "tip": "tip",
+        },
+        {
+            "id": 2,
+            "question": "Question 2",
+            "answer": "",
+            "tags": ["tag2"],
+            "tip": "",
+        },  # answer is empty
     ]
 
     invalid_decks: list[list[Flashcard]] = [

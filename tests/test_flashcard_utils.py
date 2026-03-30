@@ -7,7 +7,7 @@ NORMALIZED_DECK: list[Flashcard] = [
         "answer": "An ordered and mutable collection of elements.",
         "tip": "Lists use square brackets.",
         "tags": [],
-        "id": 0
+        "id": 0,
     },
 ]
 

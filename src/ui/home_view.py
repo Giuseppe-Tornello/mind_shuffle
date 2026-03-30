@@ -39,7 +39,9 @@ class HomeView(Widget):
     def _refresh_logo(self) -> None:
         logo = self.query_one("#home_logo", Static)
         padding = " " * HOME_LOGO_HORIZONTAL_PADDING
-        padded_logo = [f"{padding}{line}{padding}" for line in self.logo_text.splitlines()]
+        padded_logo = [
+            f"{padding}{line}{padding}" for line in self.logo_text.splitlines()
+        ]
         available_width = max(self.size.width - 2, 1)
         centered_lines = [line.center(available_width) for line in padded_logo]
         available_height = max(self.size.height, 1)
@@ -59,9 +61,7 @@ class HomeView(Widget):
                 if char.strip():
                     hue = (self._color_phase + visible_chars * 0.01) % 1.0
                     red, green, blue = hsv_to_rgb(hue, 0.8, 1.0)
-                    style = (
-                        f"bold rgb({int(red * 255)},{int(green * 255)},{int(blue * 255)})"
-                    )
+                    style = f"bold rgb({int(red * 255)},{int(green * 255)},{int(blue * 255)})"
                     rainbow.append(char, style=style)
                     visible_chars += 1
                 else:

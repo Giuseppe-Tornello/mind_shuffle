@@ -1,4 +1,5 @@
 """Constants used throughout the code"""
+
 from typing import TypedDict
 
 USER_PATH = "storage/user/"

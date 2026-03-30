@@ -8,7 +8,9 @@ from src.deck_importer_service import DeckImporterService
 from src.ui.question_session import QuestionSession
 
 
-def test_create_deck_writes_normalized_file(tmp_path: Path, monkeypatch: MonkeyPatch) -> None:
+def test_create_deck_writes_normalized_file(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+) -> None:
     monkeypatch.setattr("src.deck_editor_storage.PROJECT_ROOT", tmp_path)
 
     created_name = create_deck(
@@ -20,7 +22,9 @@ def test_create_deck_writes_normalized_file(tmp_path: Path, monkeypatch: MonkeyP
     assert (tmp_path / "storage" / "decks" / "demo.json").exists()
 
 
-def test_import_from_url_returns_invalid_deck_on_request_error(monkeypatch: MonkeyPatch) -> None:
+def test_import_from_url_returns_invalid_deck_on_request_error(
+    monkeypatch: MonkeyPatch,
+) -> None:
     def raise_timeout(*_args: object, **_kwargs: object) -> None:
         raise requests.Timeout("network timeout")
 
@@ -35,7 +39,9 @@ def test_import_from_url_returns_invalid_deck_on_request_error(monkeypatch: Monk
     assert deck_name == ""
 
 
-def test_import_deck_writes_under_project_root(tmp_path: Path, monkeypatch: MonkeyPatch) -> None:
+def test_import_deck_writes_under_project_root(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+) -> None:
     monkeypatch.setattr("src.deck_editor_storage.PROJECT_ROOT", tmp_path)
     monkeypatch.setattr("src.deck_editor_storage.is_valid_deck", lambda _: True)
 
@@ -49,7 +55,9 @@ def test_import_deck_writes_under_project_root(tmp_path: Path, monkeypatch: Monk
 
 
 def test_question_session_tracks_score_once_per_question() -> None:
-    session = QuestionSession(cards=[{"question": "Q1", "answer": "A1", "tip": "", "tags": [], "id": 0}])
+    session = QuestionSession(
+        cards=[{"question": "Q1", "answer": "A1", "tip": "", "tags": [], "id": 0}]
+    )
 
     assert session.register_answer(is_correct=True) is True
     assert session.register_answer(is_correct=False) is False

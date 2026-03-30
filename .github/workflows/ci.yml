@@ -1,4 +1,4 @@
-name: CI
+name: CI - Linter
 
 on:
   push:
@@ -47,5 +47,3 @@ jobs:
       - name: Check code formatting with isort
         run: isort --check-only --diff $(git ls-files '*.py')
 
-      - name: Test with pytest
-        run: pytest --cov src tests/

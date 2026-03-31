@@ -74,26 +74,30 @@ class QuestionMenu(Widget):
         focus_input = False
         should_refresh = True
 
-        if event.button.id == "btn_reveal":
-            self.session.reveal_answer()
-        elif event.button.id == "btn_correct":
-            should_refresh = self._register_and_advance(is_correct=True)
-            focus_input = should_refresh
-        elif event.button.id == "btn_wrong":
-            should_refresh = self._register_and_advance(is_correct=False)
-            focus_input = should_refresh
-        elif event.button.id == "btn_prev":
-            self.session.previous_question()
-            focus_input = True
-        elif event.button.id == "btn_next":
-            self.session.next_question()
-            focus_input = True
-        elif event.button.id == "btn_finish":
-            self._request_results()
-            should_refresh = False
-        elif event.button.id == "btn_home":
-            self.post_message(self.GoHome())
-            should_refresh = False
+        match event.button.id:
+            case "btn_reveal":
+                self.session.reveal_answer()
+            case "btn_correct":
+                should_refresh = self._register_and_advance(is_correct=True)
+                focus_input = should_refresh
+            case "btn_wrong":
+                should_refresh = self._register_and_advance(is_correct=False)
+                focus_input = should_refresh
+            case "btn_prev":
+                self.session.previous_question()
+                focus_input = True
+            case "btn_next":
+                self.session.next_question()
+                focus_input = True
+            case "btn_finish":
+                self._request_results()
+                should_refresh = False
+            case "btn_home":
+                self.post_message(self.GoHome())
+                should_refresh = False
+            case _:
+                pass
+
         if should_refresh:
             self._refresh_content()
         if focus_input:
